@@ -253,21 +253,6 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .vPreviewArea.show { display: block; }
 
-.engineBanner {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  margin-bottom: 16px;
-  font-size: 0.8125rem;
-  line-height: 1.45;
-}
-.engineBanner.loading { border-color: var(--primary-border); background: var(--primary-soft); }
-.engineBanner.ready { border-color: color-mix(in srgb, var(--success) 40%, var(--border)); background: var(--success-soft); }
-.engineBanner.error { border-color: #7f1d1d; background: #450a0a; }
 [data-theme="light"] .engineBanner.error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
 .engineBanner .eb-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.2; }
 .engineBanner .eb-body { flex: 1; min-width: 0; }
@@ -492,6 +477,12 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
   .navLinks { display: none; }
 }
 </style>
+
+  <!-- Google AdSense - Replace ca-pub-0000000000000000 with your ID -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000"
+     crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-0000000000000000">
+
 </head>
 <body>
 <header class="header">
@@ -527,15 +518,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
         <div class="card">
           <h1 class="hero-title">Video & Audio Converter</h1>
           <p class="hero-sub">Convert formats entirely in your browser. Nothing leaves your device.</p>
-          <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:12px">
-            <span style="font-weight:600">Speed:</span>
-            <select id="speedMode" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px">
-              <option value="fast" selected>⚡ Fast (ultrafast, 2-3x quicker)</option>
-              <option value="balanced">⚖️ Balanced</option>
-              <option value="quality">🎬 Quality</option>
-            </select>
-            <span style="color:var(--muted);font-size:11px">Tip: MP4→MOV uses instant copy when possible</span>
-          </div>
+          
           <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:12px">
             <span style="font-weight:600">Speed:</span>
             <select id="speedMode" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px">
@@ -562,16 +545,6 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
             <span class="pill">Files stay on device</span>
           </div>
 
-          <div id="engineBanner" class="engineBanner ready" role="status" aria-live="polite">
-            <div class="eb-icon">⚡</div>
-            <div class="eb-body">
-              <div class="eb-title" id="engineTitle">Engine loads when you need it</div>
-              <div class="eb-desc" id="engineDesc">Choose one video or audio file and ConvertFlow will prepare the browser-based conversion engine.</div>
-            </div>
-            <div class="eb-actions">
-              <button type="button" id="engineRetry" class="btn btn-ghost" style="display:none;padding:6px 12px;font-size:12px">Retry</button>
-            </div>
-          </div>
           <div class="progress-wrap" id="vProgressWrap" style="margin-top:-8px;margin-bottom:16px"><div class="progress-bar" id="vProgressBar" style="width:0%"></div></div>
 
           <div id="vDrop" class="drop" tabindex="0" role="button" aria-label="Drop video or audio files">
