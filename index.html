@@ -536,6 +536,26 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
             </select>
             <span style="color:var(--muted);font-size:11px">Tip: MP4→MOV uses instant copy when possible</span>
           </div>
+          <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:12px">
+            <span style="font-weight:600">Speed:</span>
+            <select id="speedMode" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px">
+              <option value="fast" selected>⚡ Fast</option>
+              <option value="balanced">⚖️ Balanced</option>
+              <option value="quality">🎬 Quality</option>
+            </select>
+            <span style="font-weight:600">Resolution:</span>
+            <select id="vResolution" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px">
+              <option value="original" selected>Original</option>
+              <option value="2160">2160p 4K</option>
+              <option value="1080">1080p Full HD</option>
+              <option value="720">720p HD</option>
+              <option value="480">480p SD</option>
+              <option value="360">360p Low</option>
+              <option value="240">240p Tiny</option>
+            </select>
+            <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="webcodecsToggle" checked> <span>🚀 Hardware</span></label>
+          </div>
+          <div id="webcodecsStatus" style="text-align:center;font-size:11px;color:var(--muted);margin-bottom:8px"></div>
           <div class="privacy-pills">
             <span class="pill">🔒 No upload</span>
             <span class="pill">Best under 500 MB</span>
@@ -1185,6 +1205,14 @@ async function convertV(id) {
     inName = `in-${id}-${safeName}`; outName = `converted-${Date.now()}.${item.out}`;
     await ffmpeg.writeFile(inName, await fetchFile(item.file));
     const speedMode = (document.getElementById('speedMode')?.value) || 'fast';
+    const resolution = (document.getElementById('vResolution')?.value) || 'original';
+    const getScaleFilter = () => {
+      if (resolution === 'original') return null;
+      const h = parseInt(resolution, 10);
+      if (!h) return null;
+      return `scale=-2:${h}`;
+    };
+    const scaleFilter = getScaleFilter();
     const preset = speedMode === 'fast' ? 'ultrafast' : speedMode === 'quality' ? 'medium' : 'veryfast';
     const crf = speedMode === 'fast' ? '28' : speedMode === 'quality' ? '20' : '23';
     const audioBR = speedMode === 'fast' ? '128k' : '192k';
@@ -1197,7 +1225,8 @@ async function convertV(id) {
     
     // Try fast remux for compatible containers (instant, no re-encode)
     const remuxable = ['mp4','mov','mkv','avi','m4v','3gp','mpg','mpeg','ts','mts'];
-    if (isVideoOut && remuxable.includes(item.out)) {
+    const needsReencode = resolution !== 'original';
+    if (isVideoOut && remuxable.includes(item.out) && !needsReencode) {
       try {
         vStatus.textContent = 'Trying fast remux (instant)...';
         await ffmpeg.exec(['-i', inName, '-c', 'copy', '-movflags', '+faststart', outName]);
@@ -1229,15 +1258,30 @@ async function convertV(id) {
         if (item.out === 'gif') {
           args.push('-vf', 'fps=10,scale=480:-1:flags=lanczos', '-c:v', 'gif', '-t', '15');
         } else if (item.out === 'webm') {
+          if (scaleFilter) {
+            args.push('-vf', scaleFilter);
+          }
           args.push('-c:v', 'libvpx', '-crf', crf, '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8', '-c:a', 'libvorbis', '-b:a', audioBR);
         } else if (item.out === 'wmv') {
+          if (scaleFilter) {
+            args.push('-vf', scaleFilter);
+          }
           args.push('-c:v', 'wmv2', '-b:v', '2000k', '-c:a', 'wmav2', '-b:a', audioBR);
         } else if (item.out === 'flv') {
+          if (scaleFilter) {
+            args.push('-vf', scaleFilter);
+          }
           args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'aac', '-b:a', audioBR, '-ar', '44100');
         } else if (['mpg','mpeg','ts','mts','mxf'].includes(item.out)) {
+          if (scaleFilter) {
+            args.push('-vf', scaleFilter);
+          }
           args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'mp2', '-b:a', audioBR);
         } else {
           // Default: mp4, mov, mkv, avi, m4v, 3gp etc - use h264 + aac
+          if (scaleFilter) {
+            args.push('-vf', scaleFilter);
+          }
           args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'aac', '-b:a', audioBR, '-movflags', '+faststart');
         }
       }
