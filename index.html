@@ -1039,9 +1039,37 @@ function renderV() {
     ${thumbHtml}
     <div class="fileMeta"><b>${escapeHtml(item.file.name)}</b><div class="meta"><span>${sizeMB} MB</span><span class="status-pill ${statusClass}">${item.status}</span>${!item.isAudio ? '<span style="font-size:11px;color:var(--primary)">Click preview to play</span>' : ''}</div></div>
     <div class="fileActions">
-      <select data-id="${item.id}" class="vOut" aria-label="Output format" ${item.status === 'converting' ? 'disabled' : ''}>
-        <option value="mp4" ${item.out === 'mp4' ? 'selected' : ''}>MP4</option><option value="mov" ${item.out === 'mov' ? 'selected' : ''}>MOV</option><option value="mp3" ${item.out === 'mp3' ? 'selected' : ''}>MP3</option><option value="gif" ${item.out === 'gif' ? 'selected' : ''}>GIF</option>
-      </select>
+      <select data-id="${item.id}" class="vOut" style="min-width:140px">
+          <optgroup label="🎬 Video">
+            <option value="mp4">MP4 - Universal</option>
+            <option value="mov">MOV - Apple QuickTime</option>
+            <option value="mkv">MKV - Matroska</option>
+            <option value="webm">WebM - Web</option>
+            <option value="avi">AVI - Old Windows</option>
+            <option value="flv">FLV - Flash</option>
+            <option value="wmv">WMV - Windows Media</option>
+            <option value="m4v">M4V - iTunes</option>
+            <option value="3gp">3GP - Mobile</option>
+            <option value="mpg">MPG - MPEG-1</option>
+            <option value="mpeg">MPEG - MPEG-2</option>
+            <option value="ts">TS - Transport Stream</option>
+            <option value="mts">MTS - AVCHD</option>
+            <option value="mxf">MXF - Broadcast</option>
+            <option value="gif">GIF - Animation</option>
+          </optgroup>
+          <optgroup label="🎵 Audio">
+            <option value="mp3">MP3 - Audio</option>
+            <option value="wav">WAV - Uncompressed</option>
+            <option value="aac">AAC - Advanced Audio</option>
+            <option value="ogg">OGG - Vorbis</option>
+            <option value="flac">FLAC - Lossless</option>
+            <option value="m4a">M4A - Apple Audio</option>
+            <option value="wma">WMA - Windows Audio</option>
+            <option value="opus">OPUS - Low latency</option>
+            <option value="aiff">AIFF - Apple Lossless</option>
+            <option value="alac">ALAC - Apple Lossless</option>
+          </optgroup>
+        </select>
       <button data-id="${item.id}" class="vConv btn btn-blue" ${canConvert ? '' : 'disabled'}>${convLabel}</button>
       <a id="vdl-${item.id}" class="btn btn-green" style="display:${downloadVisible ? 'inline-flex' : 'none'}" download>⬇️ Download</a>
       <button data-id="${item.id}" class="vReplace btn btn-ghost" aria-label="Choose another file" ${item.status === 'converting' ? 'disabled' : ''}>Replace</button>
@@ -1160,10 +1188,16 @@ async function convertV(id) {
     const preset = speedMode === 'fast' ? 'ultrafast' : speedMode === 'quality' ? 'medium' : 'veryfast';
     const crf = speedMode === 'fast' ? '28' : speedMode === 'quality' ? '20' : '23';
     const audioBR = speedMode === 'fast' ? '128k' : '192k';
-    const isVideoOut = ['mp4','mov','mkv','webm','avi'].includes(item.out);
+    const videoExts = ['mp4','mov','mkv','webm','avi','flv','wmv','m4v','3gp','mpg','mpeg','ts','mts','mxf','gif'];
+    const audioExts = ['mp3','wav','aac','ogg','flac','m4a','wma','opus','aiff','alac'];
+    const isVideoOut = videoExts.includes(item.out);
+    const isAudioOut = audioExts.includes(item.out);
     let usedFastCopy = false;
     let args = [];
-    if (isVideoOut) {
+    
+    // Try fast remux for compatible containers (instant, no re-encode)
+    const remuxable = ['mp4','mov','mkv','avi','m4v','3gp','mpg','mpeg','ts','mts'];
+    if (isVideoOut && remuxable.includes(item.out)) {
       try {
         vStatus.textContent = 'Trying fast remux (instant)...';
         await ffmpeg.exec(['-i', inName, '-c', 'copy', '-movflags', '+faststart', outName]);
@@ -1171,19 +1205,42 @@ async function convertV(id) {
         if (test && test.length > 1000) usedFastCopy = true;
         else { await ffmpeg.deleteFile(outName); throw new Error('copy too small'); }
       } catch(e) {
-        vStatus.textContent = `Fast copy failed, encoding with ${preset}...`;
+        vStatus.textContent = `Fast copy not possible, encoding with ${preset}...`;
         try{await ffmpeg.deleteFile(outName);}catch{}
-        args = ['-i', inName];
-        if (item.out === 'gif') args.push('-vf', 'fps=10,scale=360:-1:flags=lanczos', '-c:v', 'gif', '-t', '10');
-        else if (item.out === 'webm') args.push('-c:v', 'libvpx', '-crf', crf, '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8', '-c:a', 'libvorbis', '-b:a', audioBR);
-        else args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'aac', '-b:a', audioBR, '-movflags', '+faststart');
-        args.push(outName);
+        // Fall through to encode below
       }
-    } else {
+    }
+    
+    if (!usedFastCopy) {
       args = ['-i', inName];
-      if (item.out === 'mp3') args.push('-vn', '-c:a', 'libmp3lame', '-q:a', speedMode==='fast'?'4':'2');
-      else if (item.out === 'gif') args.push('-vf', 'fps=10,scale=360:-1:flags=lanczos', '-c:v', 'gif', '-t', '10');
-      else args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'aac', '-b:a', audioBR, '-movflags', '+faststart');
+      if (isAudioOut) {
+        // Audio only
+        args.push('-vn');
+        if (item.out === 'mp3') args.push('-c:a', 'libmp3lame', '-q:a', speedMode==='fast'?'4':'2');
+        else if (item.out === 'wav' || item.out === 'aiff') args.push('-c:a', 'pcm_s16le');
+        else if (item.out === 'aac' || item.out === 'm4a') args.push('-c:a', 'aac', '-b:a', audioBR);
+        else if (item.out === 'ogg' || item.out === 'opus') args.push('-c:a', item.out==='opus'?'libopus':'libvorbis', '-b:a', audioBR);
+        else if (item.out === 'flac') args.push('-c:a', 'flac');
+        else if (item.out === 'wma') args.push('-c:a', 'wmav2', '-b:a', audioBR);
+        else if (item.out === 'alac') args.push('-c:a', 'alac');
+        else args.push('-c:a', 'aac', '-b:a', audioBR);
+      } else {
+        // Video
+        if (item.out === 'gif') {
+          args.push('-vf', 'fps=10,scale=480:-1:flags=lanczos', '-c:v', 'gif', '-t', '15');
+        } else if (item.out === 'webm') {
+          args.push('-c:v', 'libvpx', '-crf', crf, '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8', '-c:a', 'libvorbis', '-b:a', audioBR);
+        } else if (item.out === 'wmv') {
+          args.push('-c:v', 'wmv2', '-b:v', '2000k', '-c:a', 'wmav2', '-b:a', audioBR);
+        } else if (item.out === 'flv') {
+          args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'aac', '-b:a', audioBR, '-ar', '44100');
+        } else if (['mpg','mpeg','ts','mts','mxf'].includes(item.out)) {
+          args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'mp2', '-b:a', audioBR);
+        } else {
+          // Default: mp4, mov, mkv, avi, m4v, 3gp etc - use h264 + aac
+          args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset, '-c:a', 'aac', '-b:a', audioBR, '-movflags', '+faststart');
+        }
+      }
       args.push(outName);
     }
     let data;
