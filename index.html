@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Convert video, audio and images privately in your browser. No uploads, no tracking. Free MP4, MOV, MP3, GIF, PNG, JPG, WebP, AVIF converter with resize, crop and compress.">
 <meta name="theme-color" content="#0b1120">
-<title>FreeOnlineConverters.cc.cc — Free Private Video, Audio & Image Converter</title>
-<link rel="canonical" href="https://freeonlineconverters.cc/">
+<title>FreeOnlineConverters.cc — Free Private Video, Audio & Image Converter</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
 
@@ -541,20 +540,19 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
   <div class="wrap hrow">
     <div class="logoRow">
       <div class="logo" aria-hidden="true">C</div>
-      <div class="brand">FreeOnlineConverters.cc.cc</div>
-      <span class="badge">100% PRIVATE</span>
+      <div class="brand">FreeOnlineConverters.cc</div>
+      <span class="badge">100% Private</span>
       <div class="tabs" role="tablist" aria-label="Converter type">
-        <button type="button" class="tabBtn active" data-tab="video" role="tab" aria-selected="true">🎬 Video & Audio</button>
-        <a href="/image-resizer.html" class="tabBtn" role="tab" style="text-decoration:none;display:inline-flex;align-items:center">🖼️ Image Resizer</a>
-        <a href="/pdf-tools.html" class="tabBtn" role="tab" style="text-decoration:none;display:inline-flex;align-items:center">📄 PDF Tools</a>
+        <button class="tabBtn active" data-tab="video" role="tab" aria-selected="true">🎬 Video & Audio</button>
+        <a href="/resizeflowcc.html" target="_blank" class="tabBtn" role="tab" style="text-decoration:none;display:inline-flex;align-items:center">🖼️ Image ↗</a>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
       <nav class="navLinks">
         <a href="#articles">Articles</a>
-        <a href="/about.html">About</a>
+        <a href="https://freeonlineconverters.cc/about.html">About</a>
       </nav>
-      <button type="button" id="themeToggle" class="themeBtn" aria-label="Toggle theme">☀️</button>
+      <button id="themeToggle" class="themeBtn" aria-label="Toggle light mode" title="Toggle theme">☀️</button>
     </div>
   </div>
 </header>
@@ -817,7 +815,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
             <article class="article-card">
               <span class="tag">Privacy</span>
               <h3>Why private conversion matters</h3>
-              <p>Most online converters upload your files to a server. That risks leaks, logs, and third-party access. ConvertFlow runs FFmpeg and canvas processing only in your browser — your media never leaves the device.</p>
+              <p>Most online converters upload your files to a server. That risks leaks, logs, and third-party access. FreeOnlineConverters.cc runs FFmpeg and canvas processing only in your browser — your media never leaves the device.</p>
               <a href="/articles/why-private-conversion.html">Read more →</a>
             </article>
             <article class="article-card">
@@ -861,7 +859,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
       <div class="card" style="padding: 16px">
-        <!-- ConvertFlow - Sidebar 300x600 -->
+        <!-- FreeOnlineConverters.cc - Sidebar 300x600 -->
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-4747106371991816"
@@ -877,7 +875,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
 <footer>
   <div class="wrap">
     <div class="footer-inner">
-      <div>© 2026 FreeOnlineConverters.cc.cc · Private by design</div>
+      <div>© 2026 FreeOnlineConverters.cc · Private by design</div>
       <div class="footer-links">
         <a href="/privacy-policy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
@@ -980,56 +978,89 @@ async function resetFFmpeg() {
   loaded = false;
 }
 
+async function checkWorkerAssetsPresent() {
+  const files = ['worker.js', 'const.js', 'errors.js'];
+  for (const f of files) {
+    const url = new URL(`/ffmpeg/${f}`, location.origin).href;
+    let res;
+    try {
+      res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    } catch (e) {
+      throw new Error(`Could not reach ${f} at ${url} (network error: ${e.message}).`);
+    }
+    if (!res.ok) {
+      throw new Error(`${f} returned HTTP ${res.status} at ${url}. Make sure worker.js, const.js, and errors.js are all deployed under /ffmpeg/ on this domain.`);
+    }
+    const ct = res.headers.get('content-type') || '';
+    if (ct.includes('text/html')) {
+      throw new Error(`${f} was served as HTML (content-type "${ct}") — this usually means the file is missing and your host's SPA fallback returned index.html instead of a 404.`);
+    }
+  }
+}
+
 function withTimeout(promise, ms, label) {
   let timer;
   const timeout = new Promise((_, reject) => {
-    timer = setTimeout(() => reject(new Error(`${label} timed out after ${Math.round(ms / 1000)}s. Check network or cdn.jsdelivr.net`)), ms);
+    timer = setTimeout(() => reject(new Error(`${label} timed out after ${Math.round(ms / 1000)}s. Check your network connection or whether cdn.jsdelivr.net is reachable/blocked.`)), ms);
   });
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 async function loadCoreFrom() {
-  // FIXED FOR CLOUDFLARE PAGES - Works with original index.html structure
-  // Try self-hosted /ffmpeg/ first (your original method), fallback to blob CDN method if missing
-  let classWorkerURL;
-  try {
-    // Try to fetch self-hosted worker.js
-    const testRes = await fetch('/ffmpeg/worker.js', { method: 'HEAD', cache: 'no-store' });
-    const ct = testRes.headers.get('content-type') || '';
-    if (testRes.ok && !ct.includes('text/html')) {
-      classWorkerURL = new URL('/ffmpeg/worker.js', location.origin).href;
-    } else {
-      throw new Error('self-hosted not available');
-    }
-  } catch {
-    // Fallback: blobify from CDN - no /ffmpeg/ folder needed, fixes Cloudflare Pages SPA issue
-    classWorkerURL = await withTimeout(
-      toBlobURL('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js', 'text/javascript'),
-      15000,
-      'Downloading FFmpeg worker'
-    );
-  }
+  // classWorkerURL must be same-origin — browsers hard-block cross-origin
+  // Worker construction regardless of CORS headers, which is why pointing
+  // it straight at jsDelivr failed with "Failed to construct 'Worker'".
+  //
+  // worker.js itself has exactly two dependencies — const.js and errors.js —
+  // both tiny leaf files with no further imports. All three must be
+  // self-hosted together under /ffmpeg/ (this repo ships them there).
+  await checkWorkerAssetsPresent();
+  const classWorkerURL = new URL('/ffmpeg/worker.js', location.origin).href;
 
-  const useMultiThread = false; // Set to window.crossOriginIsolated for MT, but needs COOP/COEP headers which break AdSense
-  const corePkg = '@ffmpeg/core';
+  // Multi-threaded FFmpeg core (@ffmpeg/core-mt) spreads work across CPU
+  // cores via SharedArrayBuffer, which requires the page to be served with
+  // COOP/COEP headers (window.crossOriginIsolated === true). We feature-
+  // detect rather than assume — if those headers aren't set (e.g. they'd
+  // conflict with ad-network iframes), this automatically and silently
+  // falls back to the single-threaded core with no user-visible difference
+  // other than speed.
+  const useMultiThread = window.crossOriginIsolated === true;
+  const corePkg = useMultiThread ? '@ffmpeg/core-mt' : '@ffmpeg/core';
   const CORE_CDN_BASE = `https://cdn.jsdelivr.net/npm/${corePkg}@0.12.6/dist/esm`;
 
-  const [coreURL, wasmURL] = await withTimeout(
-    Promise.all([
-      toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.js`, 'text/javascript'),
-      toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
-    ]),
+  // ffmpeg-core.js/.wasm (the ~31MB core) are loaded from a CDN via
+  // toBlobURL, which uses fetch() (not the Worker constructor) so it isn't
+  // subject to the same-origin restriction above. This also avoids
+  // Cloudflare Pages' 25 MiB per-file limit, since the huge wasm never has
+  // to be deployed as a static asset. The -mt build additionally needs a
+  // third file (ffmpeg-core.worker.js) for its internal pthread workers —
+  // this one IS published as a proper self-contained artifact by
+  // @ffmpeg/core-mt, so blobifying it directly is safe (unlike
+  // @ffmpeg/ffmpeg's own worker.js).
+  const coreUrls = [
+    toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.js`, 'text/javascript'),
+    toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
+  ];
+  if (useMultiThread) {
+    coreUrls.push(toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.worker.js`, 'text/javascript'));
+  }
+
+  const [coreURL, wasmURL, workerURL] = await withTimeout(
+    Promise.all(coreUrls),
     45000,
-    'Downloading FFmpeg core'
+    'Downloading FFmpeg core from CDN'
   );
 
+  const loadOpts = { coreURL, wasmURL, classWorkerURL };
+  if (useMultiThread) loadOpts.workerURL = workerURL;
+
   await withTimeout(
-    ffmpeg.load({ coreURL, wasmURL, classWorkerURL }),
-    30000,
+    ffmpeg.load(loadOpts),
+    25000,
     'FFmpeg engine load'
   );
 
-  ffmpegMultiThreaded = false;
+  ffmpegMultiThreaded = useMultiThread;
 }
 
 async function loadFFmpeg(forceFresh = false) {
