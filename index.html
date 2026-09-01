@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Convert video, audio and images privately in your browser. No uploads, no tracking. Free MP4, MOV, MP3, GIF, PNG, JPG, WebP, AVIF converter with resize, crop and compress.">
+<meta name="description" content="Convert video and audio privately in your browser. No uploads, no tracking. Free MP4, MOV, MP3, WAV, AAC, FLAC converter with resize, rotate, flip and compress.">
 <meta name="theme-color" content="#0b1120">
-<title>FreeOnlineConverters.cc — Free Private Video, Audio & Image Converter</title>
+<title>FreeOnlineConverters.cc — Free Private Video & Audio Converter</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
 
@@ -250,15 +250,6 @@ select:focus, input[type="number"]:focus {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 input[type="color"] { padding: 2px; width: 44px; height: 38px; cursor: pointer; }
-input[type="range"] {
-  -webkit-appearance: none; appearance: none; height: 6px;
-  background: var(--border); border-radius: 999px; outline: none; flex: 1;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--primary); cursor: pointer;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4); border: 2px solid #fff;
-}
 
 .steps {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px;
@@ -287,7 +278,6 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--muted); font-size: 0.75rem; background: var(--card); min-height: 90px;
 }
 
-/* Video preview area */
 .vPreviewArea {
   display: none;
   margin-top: 8px;
@@ -295,71 +285,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .vPreviewArea.show { display: block; }
 
-.engineBanner {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  margin-bottom: 16px;
-  font-size: 0.8125rem;
-  line-height: 1.45;
-}
-.engineBanner.loading { border-color: var(--primary-border); background: var(--primary-soft); }
-.engineBanner.ready { border-color: color-mix(in srgb, var(--success) 40%, var(--border)); background: var(--success-soft); }
-.engineBanner.error { border-color: #7f1d1d; background: #450a0a; }
-[data-theme="light"] .engineBanner.error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
-.engineBanner .eb-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.2; }
-.engineBanner .eb-body { flex: 1; min-width: 0; }
-.engineBanner .eb-title { font-weight: 700; margin-bottom: 2px; color: var(--text); }
-.engineBanner .eb-desc { color: var(--muted); font-size: 0.75rem; }
-.engineBanner.ready .eb-desc { color: var(--success-text); }
-.engineBanner .eb-actions { flex-shrink: 0; }
-
-.playerModal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: rgba(0,0,0,0.75);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.playerModal.show { display: flex; }
-.playerModal-inner {
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  max-width: min(920px, 100%);
-  width: 100%;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-lg);
-}
-.playerModal video {
-  width: 100%;
-  max-height: 70vh;
-  border-radius: 10px;
-  background: #000;
-}
-.playerModal-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-.playerModal-bar span {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  word-break: break-all;
-}
-.fileThumb {
-  cursor: pointer;
-}
+.fileThumb { cursor: pointer; }
 .fileThumb:hover { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 .fileCard {
@@ -419,53 +345,44 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 999px; width: 0%; transition: width 0.25s ease;
 }
 
-.iWorkspace-grid {
-  display: grid; grid-template-columns: 1fr 300px; gap: 20px;
+.playerModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.75);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-@media (max-width: 900px) { .iWorkspace-grid { grid-template-columns: 1fr; } }
-.canvasWrap {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 16px;
-  display: flex; align-items: center; justify-content: center;
-  min-height: 340px; position: relative; overflow: auto;
+.playerModal.show { display: flex; }
+.playerModal-inner {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  max-width: min(920px, 100%);
+  width: 100%;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
 }
-canvas { max-width: 100%; border-radius: 10px; box-shadow: var(--shadow-lg); }
-.cropOverlay { position:absolute; display:none; border:2px solid var(--primary); box-sizing:border-box; cursor:move; touch-action:none; box-shadow:0 0 0 9999px rgba(0,0,0,.38); }
-.cropOverlay.show { display:block; }
-.cropHandle { position:absolute; width:14px; height:14px; right:-8px; bottom:-8px; border-radius:50%; background:var(--primary); border:2px solid white; cursor:nwse-resize; }
-.editHistory { display:flex; gap:8px; margin-top:10px; }
-#iApplyCrop { min-height:42px; padding:0 16px; font-size:.82rem; letter-spacing:.02em; background:linear-gradient(135deg,#2563eb,#3b82f6); border-color:#60a5fa; color:#fff; animation:cropPulse 1.6s ease-in-out infinite; }
-#iApplyCrop:hover { transform:translateY(-1px); filter:brightness(1.08); }
-@keyframes cropPulse { 0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,.35); } 50% { box-shadow:0 0 0 7px rgba(59,130,246,0); } }
-.editHistory .btn:disabled { opacity:.45; cursor:not-allowed; }
-.controls { display: flex; flex-direction: column; gap: 18px; }
-.control-group { display: flex; flex-direction: column; gap: 8px; }
-.control-label {
-  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.04em; color: var(--muted);
+.playerModal video {
+  width: 100%;
+  max-height: 70vh;
+  border-radius: 10px;
+  background: #000;
 }
-.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.checkRow {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 0.8125rem; font-weight: 500; cursor: pointer;
+.playerModal-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
 }
-.checkRow input { accent-color: var(--primary); width: 16px; height: 16px; }
-.fitBox {
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 12px; background: var(--bg); display: none;
-}
-.fitBox.show { display: block; }
-.presetGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.preset {
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 9px 10px; font-size: 0.75rem; font-weight: 500; cursor: pointer;
-  text-align: left; background: var(--card); font-family: inherit;
-  color: var(--text); transition: all 0.15s ease;
-}
-.preset:hover { border-color: var(--primary-border); background: var(--primary-soft); }
-.preset.active {
-  border-color: var(--primary); background: var(--primary-soft);
-  color: var(--primary); font-weight: 600;
+.playerModal-bar span {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  word-break: break-all;
 }
 
 .status-line {
@@ -473,7 +390,6 @@ canvas { max-width: 100%; border-radius: 10px; box-shadow: var(--shadow-lg); }
   margin-top: 14px; min-height: 1.25em;
 }
 
-/* Articles */
 .articles-section { margin-top: 40px; }
 .articles-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -524,7 +440,6 @@ footer {
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: none; }
 
-/* Nav links in header */
 .navLinks { display: flex; gap: 16px; align-items: center; }
 .navLinks a {
   font-size: 0.8125rem; font-weight: 600; color: var(--muted);
@@ -544,7 +459,6 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
       <span class="badge">100% Private</span>
       <div class="tabs" role="tablist" aria-label="Converter type">
         <button class="tabBtn active" data-tab="video" role="tab" aria-selected="true">🎬 Video & Audio</button>
-        <a href="/resizeflowcc.html" target="_blank" class="tabBtn" role="tab" style="text-decoration:none;display:inline-flex;align-items:center">🖼️ Image ↗</a>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -572,7 +486,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
   <div class="grid2">
     <main>
       <!-- VIDEO TAB -->
-      <div id="videoTab">
+      <div id="videoTab" style="display:block">
         <div class="card">
           <h1 class="hero-title">Video & Audio Converter</h1>
           <p class="hero-sub">Convert formats entirely in your browser. Nothing leaves your device.</p>
@@ -653,154 +567,12 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
             <div class="step">
               <div class="stepNum">2</div>
               <b>Wait, then convert</b>
-              <p>Wait until the green “Engine ready” banner appears. Convert stays disabled until then. Pick MP4, MOV, MP3 or GIF and click Convert.</p>
+              <p>Wait until the green “Engine ready” banner appears. Convert stays disabled until then. Pick MP4, MOV, MP3 or WAV and click Convert.</p>
             </div>
             <div class="step">
               <div class="stepNum">3</div>
               <b>Download</b>
               <p>When conversion finishes, the green Download button appears. Save the file instantly to your device.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- IMAGE TAB -->
-      
-      <div id="imageTab" style="display: block">
-        <div class="card" style="padding:16px;background:var(--card)">
-          <div style="background:#dcfce7;color:#166534;padding:8px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:12px;text-align:center">Loaded: <span id="loadedInfo">1672 × 941 px</span></div>
-          <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start">
-            <!-- LEFT: Canvas -->
-            <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:12px">
-              <div style="background:#0f172a;background-image:linear-gradient(45deg,#1e293b 25%,transparent 25%,transparent 75%,#1e293b 75%,#1e293b),linear-gradient(45deg,#1e293b 25%,transparent 25%,transparent 75%,#1e293b 75%,#1e293b);background-size:20px 20px;background-position:0 0,10px 10px;border-radius:12px;padding:12px;min-height:400px;display:flex;align-items:center;justify-content:center">
-                <div style="position:relative;width:100%">
-                  <canvas id="imgCanvas" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px"></canvas>
-                  <div id="cropOverlay" class="cropOverlay" aria-label="Crop selection"><div id="cropHandle" class="cropHandle"></div></div>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px">
-                <button id="iReplace" class="btn btn-ghost" style="font-size:0.8rem">Replace Image</button>
-                <button id="iShowOriginal" class="btn btn-ghost" style="font-size:0.8rem">Show Original</button>
-                <button id="iShowEdited" class="btn" style="background:var(--primary);color:white;font-size:0.8rem">Show Edited</button>
-              </div>
-              <div style="margin-top:12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:0.75rem;color:var(--muted)">
-                <div>Size/ Format: <span id="sizeFormatInfo">1672 × 941 px | PNG</span></div>
-                <div id="iInfo" class="status-line" style="margin-top:4px"></div>
-              </div>
-              <div style="margin-top:10px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:10px">
-                <div style="font-size:0.75rem;font-weight:700;margin-bottom:6px">Uploaded file</div>
-                <div style="font-size:0.7rem;color:var(--muted);line-height:1.5">
-                  <div>Name: <span id="fileName">Haydi-don-flamenko-turkce-wide.png</span></div>
-                  <div>Extension: <span id="fileExt">PNG</span> · Size: <span id="fileSize">1.64 MB</span></div>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-                <button id="iUndo" class="btn btn-ghost" disabled>↶ Undo</button>
-                <button id="iRedo" class="btn btn-ghost" disabled>↷ Redo</button>
-              </div>
-            </div>
-
-            <!-- RIGHT: Image Settings -->
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:16px;padding:14px">
-              <h3 style="font-weight:800;font-size:1.1rem;margin-bottom:10px">Image Settings</h3>
-              <div style="display:flex;gap:12px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:12px;font-size:0.8rem">
-                <button class="settingsTab active" data-settings-tab="resize" style="background:none;border:0;border-bottom:2px solid var(--primary);color:var(--primary);font-weight:700;cursor:pointer;padding:4px 6px">Resize & Convert</button>
-                <button class="settingsTab" data-settings-tab="crop" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Crop</button>
-                <button class="settingsTab" data-settings-tab="transform" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Transform</button>
-                <button class="settingsTab" data-settings-tab="compress" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Compression</button>
-                <button class="settingsTab" data-settings-tab="enhance" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Enhance</button>
-                <button class="settingsTab" data-settings-tab="pdf" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">PDF Tools</button>
-              </div>
-
-              <!-- Resize & Convert Panel -->
-              <div id="settings-resize">
-                <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px">
-                  <label style="display:flex;align-items:center;gap:8px;font-size:0.8rem;font-weight:600"><input id="keepAspect" type="checkbox" checked> 🔒 Keep Aspect Ratio <span style="background:#2563eb;color:white;font-size:0.6rem;padding:2px 6px;border-radius:999px">RECOMMENDED</span></label>
-                  <div style="font-size:0.7rem;color:var(--muted);margin-top:4px">Keeps your image proportions correct. Change Width or Height and the other value adjusts automatically.</div>
-                </div>
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px">Resize Dimensions</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-                  <input id="iW" type="number" value="1672" style="padding:10px;border-radius:8px;border:1px solid var(--primary);background:var(--card);color:var(--text)">
-                  <input id="iH" type="number" value="941" style="padding:10px;border-radius:8px;border:1px solid var(--primary);background:var(--card);color:var(--text)">
-                </div>
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px">Social & Standard Presets</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
-                  <button class="preset" data-w="1920" data-h="1080" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">YouTube 1920×1080</button>
-                  <button class="preset" data-w="1080" data-h="1920" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Shorts / Reels / TikTok 1080×1920</button>
-                  <button class="preset" data-w="1080" data-h="1080" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Instagram 1080×1080</button>
-                  <button class="preset" data-w="400" data-h="400" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Profile Photo 400×400</button>
-                  <button class="preset" data-w="1200" data-h="628" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">FB / LinkedIn 1200×628</button>
-                  <button class="preset" data-w="1200" data-h="675" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Twitter/X 1200×675</button>
-                  <button class="preset" data-w="3840" data-h="2160" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">4K UHD 3840×2160</button>
-                  <button class="preset" data-w="2160" data-h="3840" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">4K Vertical 2160×3840</button>
-                </div>
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px">Convert Image Format</div>
-                <div style="font-size:0.7rem;color:var(--muted);margin-bottom:4px">Resize and convert formats seamlessly.</div>
-                <select id="iFormat" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--primary);background:var(--card);color:var(--text);margin-bottom:10px">
-                  <option value="image/png" selected>Convert to PNG</option>
-                  <option value="image/jpeg">Convert to JPG</option>
-                  <option value="image/webp">Convert to WebP</option>
-                  <option value="image/avif">Convert to AVIF</option>
-                </select>
-                <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:0.65rem;color:var(--muted);line-height:1.5;margin-bottom:10px">Privacy Notice: EXIF metadata (GPS, camera info) is automatically stripped upon conversion for security and reduced file size. Animated GIFs are flattened to a single frame. AVIF uses a local WASM encoder (slower, often much smaller files).</div>
-                <button id="iResetFormat" class="btn btn-ghost" style="font-size:0.7rem">↺ Reset Resize & Format</button>
-              </div>
-
-              <!-- Crop Panel -->
-              <div id="settings-crop" style="display:none">
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Crop & Transform</div>
-                <select id="iCrop" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px">
-                  <option value="none">No crop</option>
-                  <option value="custom">Custom crop</option>
-                  <option value="1:1">1:1 Square</option>
-                  <option value="16:9">16:9</option>
-                  <option value="9:16">9:16</option>
-                  <option value="4:3">4:3</option>
-                </select>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                  <button id="iApplyCrop" class="btn" style="background:var(--primary);color:white;display:none">✓ APPLY CROP</button>
-                  <button id="iRotate" class="btn btn-ghost">↻ 90°</button>
-                  <button id="iFlipH" class="btn btn-ghost">Flip H</button>
-                  <button id="iFlipV" class="btn btn-ghost">Flip V</button>
-                </div>
-              </div>
-
-              <!-- Transform Panel -->
-              <div id="settings-transform" style="display:none">
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Transform & Fit</div>
-                <select id="iFit" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px">
-                  <option value="contain">Contain — fit inside + background</option>
-                  <option value="cover">Cover — crop to fill</option>
-                  <option value="stretch">Stretch — distort</option>
-                </select>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:0.7rem">Fill color</span><input id="iBg" type="color" value="#000000"><span id="bgHex" style="font-size:0.7rem;color:var(--muted)">#000000</span></div>
-                <button id="iReset" class="btn btn-ghost">Reset</button>
-              </div>
-
-              <!-- Compression Panel -->
-              <div id="settings-compress" style="display:none">
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Compression</div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:0.7rem;min-width:50px">Quality</span><input id="iQuality" type="range" min="10" max="100" value="90" style="flex:1"><span id="iQVal" style="font-size:0.7rem;font-weight:700">90%</span></div>
-              </div>
-
-              <!-- Enhance Panel -->
-              <div id="settings-enhance" style="display:none">
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Enhance</div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:0.7rem;min-width:50px">Bright</span><input id="iBright" type="range" min="50" max="150" value="100" style="flex:1"></div>
-              </div>
-
-              <!-- PDF Tools Panel -->
-              <div id="settings-pdf" style="display:none">
-                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">PDF Tools — Private, Offline</div>
-                <div style="display:flex;gap:6px;margin-bottom:10px"><button class="pdf-tab active" data-pdf-tab="img2pdf" style="padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:0.7rem;cursor:pointer">Images to PDF</button><button class="pdf-tab" data-pdf-tab="pdf2img" style="padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">PDF to Images</button><button class="pdf-tab" data-pdf-tab="merge" style="padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Merge PDFs</button></div>
-                <div id="tab-img2pdf"><div id="img2pdfDrop" class="drop" style="padding:16px;border:1px dashed var(--border);border-radius:10px;text-align:center;cursor:pointer"><div>🖼️ → 📄 Drop images</div><input id="img2pdfInput" type="file" accept="image/*" multiple hidden></div><div id="img2pdfList" style="margin:8px 0"></div><button id="img2pdfBtn" class="btn" style="background:var(--primary);color:white;width:100%;margin-top:6px" disabled>Create PDF</button></div>
-                <div id="tab-pdf2img" style="display:none"><div id="pdf2imgDrop" class="drop" style="padding:16px;border:1px dashed var(--border);border-radius:10px;text-align:center;cursor:pointer"><div>📄 → 🖼️ Drop PDF</div><input id="pdf2imgInput" type="file" accept="application/pdf" hidden></div><div id="pdf2imgList" style="margin:8px 0;display:grid;grid-template-columns:1fr 1fr;gap:6px"></div><button id="pdf2imgDownloadAll" class="btn" style="background:var(--primary);color:white;width:100%;margin-top:6px" disabled>Download ZIP</button></div>
-                <div id="tab-merge" style="display:none"><div id="mergeDrop" class="drop" style="padding:16px;border:1px dashed var(--border);border-radius:10px;text-align:center;cursor:pointer"><div>📄+📄 Drop PDFs</div><input id="mergeInput" type="file" accept="application/pdf" multiple hidden></div><div id="mergeList" style="margin:8px 0"></div><button id="mergeBtn" class="btn" style="background:var(--primary);color:white;width:100%;margin-top:6px" disabled>Merge PDFs</button></div>
-                <div id="img2pdfStatus" style="font-size:0.7rem;color:var(--muted);margin-top:6px"></div><div id="pdf2imgStatus" style="font-size:0.7rem;color:var(--muted)"></div><div id="mergeStatus" style="font-size:0.7rem;color:var(--muted)"></div>
-              </div>
-
-              <button id="iDownload" class="btn" style="background:#22c55e;color:white;width:100%;padding:12px;border-radius:10px;font-weight:800;margin-top:16px">⬇️ Download PNG</button>
-              <button id="iNew" class="btn btn-ghost" style="width:100%;margin-top:8px">↺ Reset All Changes</button>
             </div>
           </div>
         </div>
@@ -825,15 +597,9 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
               <a href="/articles/mp4-vs-mov-vs-gif.html">Read more →</a>
             </article>
             <article class="article-card">
-              <span class="tag">Image</span>
-              <h3>Instagram, YouTube & TikTok sizes explained</h3>
-              <p>1080×1080 posts, 1080×1920 Stories/Reels/Shorts, 1280×720 thumbnails. Use the right preset so platforms don’t crop or stretch your image.</p>
-              <a href="/articles/social-image-sizes.html">Read more →</a>
-            </article>
-            <article class="article-card">
               <span class="tag">Tips</span>
               <h3>Faster conversions and smaller files</h3>
-              <p>Keep resolution reasonable, use WebP or AVIF for photos, and prefer MP4 with H.264 for video. Browser conversion works best under a few hundred MB; very large files may need patience or a desktop tool.</p>
+              <p>Keep resolution reasonable, use MP4 with H.264 for video and MP3/AAC for audio. Browser conversion works best under a few hundred MB; very large files may need patience or a desktop tool.</p>
               <a href="/articles/faster-smaller-files.html">Read more →</a>
             </article>
             <article class="article-card">
@@ -875,7 +641,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
 <footer>
   <div class="wrap">
     <div class="footer-inner">
-      <div>© 2026 FreeOnlineConverters.cc · Private by design</div>
+      <div>© 2026 FreeOnlineConverters.cc · Private by design — Video & Audio only</div>
       <div class="footer-links">
         <a href="/privacy-policy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
@@ -909,7 +675,7 @@ themeBtn.onclick = () => {
   applyTheme(cur === 'dark' ? 'light' : 'dark');
 };
 
-// ——— Tabs ———
+// ——— Tabs ——— (Video & Audio only)
 document.querySelectorAll('.tabBtn').forEach(b => {
   b.onclick = () => {
     document.querySelectorAll('.tabBtn').forEach(x => {
@@ -918,10 +684,7 @@ document.querySelectorAll('.tabBtn').forEach(b => {
     });
     b.classList.add('active');
     b.setAttribute('aria-selected', 'true');
-    const t = b.dataset.tab;
-    document.getElementById('videoTab').style.display = t === 'video' ? 'block' : 'none';
-    document.getElementById('imageTab').style.display = 'none'; // disabled - opens /resizeflowcc.html instead
-    if(t==='image'){ window.open('/resizeflowcc.html','_blank'); return; }
+    document.getElementById('videoTab').style.display = 'block';
   };
 });
 
@@ -947,18 +710,15 @@ const playerModal = document.getElementById('playerModal');
 const playerVideo = document.getElementById('playerVideo');
 const playerName = document.getElementById('playerName');
 
-const MIME = { mp4: 'video/mp4', mov: 'video/quicktime', mp3: 'audio/mpeg', gif: 'image/gif' };
+const MIME = { mp4: 'video/mp4', mov: 'video/quicktime', mp3: 'audio/mpeg', gif: 'image/gif', wav: 'audio/wav', mkv: 'video/x-matroska', webm: 'video/webm', m4a: 'audio/mp4', aac: 'audio/aac' };
 const MAX_RECOMMENDED_BYTES = 500 * 1024 * 1024;
 const MAX_HARD_BYTES = 1024 * 1024 * 1024;
-// Note: no self-hosted /ffmpeg/ assets are needed anymore — everything
-// loads from jsDelivr. See loadCoreFrom() below for why.
 
 function setEngineUI(state, title, desc) {
   if (engineBanner) engineBanner.className = 'engineBanner ' + state;
   if (engineTitle) engineTitle.textContent = title;
   if (engineDesc) engineDesc.innerHTML = desc;
   if (engineRetry) engineRetry.style.display = state === 'error' ? 'inline-flex' : 'none';
-  // Also update vStatus for visibility since banner removed
   if (typeof vStatus !== 'undefined' && vStatus) {
     if (state === 'loading') vStatus.textContent = title;
     else if (state === 'ready') vStatus.textContent = '';
@@ -1007,36 +767,11 @@ function withTimeout(promise, ms, label) {
 }
 
 async function loadCoreFrom() {
-  // classWorkerURL must be same-origin — browsers hard-block cross-origin
-  // Worker construction regardless of CORS headers, which is why pointing
-  // it straight at jsDelivr failed with "Failed to construct 'Worker'".
-  //
-  // worker.js itself has exactly two dependencies — const.js and errors.js —
-  // both tiny leaf files with no further imports. All three must be
-  // self-hosted together under /ffmpeg/ (this repo ships them there).
   await checkWorkerAssetsPresent();
   const classWorkerURL = new URL('/ffmpeg/worker.js', location.origin).href;
-
-  // Multi-threaded FFmpeg core (@ffmpeg/core-mt) spreads work across CPU
-  // cores via SharedArrayBuffer, which requires the page to be served with
-  // COOP/COEP headers (window.crossOriginIsolated === true). We feature-
-  // detect rather than assume — if those headers aren't set (e.g. they'd
-  // conflict with ad-network iframes), this automatically and silently
-  // falls back to the single-threaded core with no user-visible difference
-  // other than speed.
   const useMultiThread = window.crossOriginIsolated === true;
   const corePkg = useMultiThread ? '@ffmpeg/core-mt' : '@ffmpeg/core';
   const CORE_CDN_BASE = `https://cdn.jsdelivr.net/npm/${corePkg}@0.12.6/dist/esm`;
-
-  // ffmpeg-core.js/.wasm (the ~31MB core) are loaded from a CDN via
-  // toBlobURL, which uses fetch() (not the Worker constructor) so it isn't
-  // subject to the same-origin restriction above. This also avoids
-  // Cloudflare Pages' 25 MiB per-file limit, since the huge wasm never has
-  // to be deployed as a static asset. The -mt build additionally needs a
-  // third file (ffmpeg-core.worker.js) for its internal pthread workers —
-  // this one IS published as a proper self-contained artifact by
-  // @ffmpeg/core-mt, so blobifying it directly is safe (unlike
-  // @ffmpeg/ffmpeg's own worker.js).
   const coreUrls = [
     toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.js`, 'text/javascript'),
     toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
@@ -1235,11 +970,6 @@ function updateVPreviewTransform(){
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && playerModal.classList.contains('show')) closePlayer(); });
 function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 
-// ——— Native WAV fast path (no FFmpeg engine needed) ———
-// WAV is uncompressed PCM, so for audio extraction we can skip the 31MB
-// FFmpeg engine entirely and use the browser's own hardware-accelerated
-// audio decoder via the Web Audio API. This is both faster and available
-// instantly (no engine download wait) compared to routing through WASM.
 function writeAsciiString(view, offset, str) {
   for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
 }
@@ -1259,7 +989,7 @@ function audioBufferToWavBlob(buffer) {
   writeAsciiString(view, 8, 'WAVE');
   writeAsciiString(view, 12, 'fmt ');
   view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true); // PCM format
+  view.setUint16(20, 1, true);
   view.setUint16(22, numChannels, true);
   view.setUint32(24, sampleRate, true);
   view.setUint32(28, sampleRate * blockAlign, true);
@@ -1302,7 +1032,6 @@ async function convertV(id) {
   const item = vFiles.find(f=>f.id===id);
   if (!item || item.id !== id || item.status === 'converting') return;
 
-  // --- Native Web Audio fast path for WAV output (no FFmpeg engine needed) ---
   if (item.out === 'wav') {
     try {
       item.status = 'converting';
@@ -1322,11 +1051,9 @@ async function convertV(id) {
     } catch (e) {
       console.warn('Native WAV decode failed, falling back to FFmpeg', e);
       vStatus.textContent = `Native decode unavailable (${e.message || 'unsupported format'}), using conversion engine...`;
-      // Fall through to the regular FFmpeg path below.
     }
   }
 
-  // --- Hardware acceleration fast path for MP4->WebM (safe, cannot break upload) ---
   const vRotHW = (document.getElementById('vRotate')?.value) || '0'; const vFlipHHW = document.getElementById('vFlipH')?.checked; const vFlipVHW = document.getElementById('vFlipV')?.checked; const useHardware = document.getElementById('webcodecsToggle')?.checked && typeof MediaRecorder !== 'undefined' && item.file.type.startsWith('video/') && item.file.name.toLowerCase().endsWith('.mp4') && item.out === 'webm' && vRotHW === '0' && !vFlipHHW && !vFlipVHW;
   if (useHardware) {
     try {
@@ -1354,7 +1081,6 @@ async function convertV(id) {
       const ctx = canvas.getContext('2d');
       const stream = canvas.captureStream(30);
       
-      // Try to add audio track (skipped entirely if "Remove audio" is checked)
       const removeAudioHW = document.getElementById('removeAudioToggle')?.checked ?? false;
       if (!removeAudioHW) {
         try {
@@ -1409,7 +1135,6 @@ async function convertV(id) {
       vStatus.textContent = `Hardware failed (${e.message}), using WASM...`;
     }
   }
-  // --- End hardware path, continue to WASM below ---
 
   try { await loadFFmpeg(); } catch { vStatus.textContent = 'Engine not ready. Use Retry in the banner above.'; renderV(); return; }
   item.status = 'converting';
@@ -1439,7 +1164,6 @@ async function convertV(id) {
       return filters.length ? filters.join(',') : null;
     };
     const scaleFilter = getVideoFilters();
-    const getScaleFilter = () => scaleFilter;
     const preset = speedMode === 'fast' ? 'ultrafast' : speedMode === 'quality' ? 'medium' : 'veryfast';
     const crf = speedMode === 'fast' ? '28' : speedMode === 'quality' ? '20' : '23';
     const audioBR = speedMode === 'fast' ? '128k' : '192k';
@@ -1451,9 +1175,6 @@ async function convertV(id) {
     let usedFastCopy = false;
     let args = [];
     
-    // Try fast remux for compatible containers (instant, no re-encode).
-    // -an here still keeps the video stream untouched via -c:v copy, so
-    // "remove audio" stays just as fast/lossless as a normal remux.
     const remuxable = ['mp4','mov','mkv','avi','m4v','3gp','mpg','mpeg','ts','mts'];
     const needsReencode = resolution !== 'original' || vRotate !== '0' || vFlipH || vFlipV;
     if (isVideoOut && remuxable.includes(item.out) && !needsReencode) {
@@ -1469,14 +1190,12 @@ async function convertV(id) {
       } catch(e) {
         vStatus.textContent = `Fast copy not possible, encoding with ${preset}...`;
         try{await ffmpeg.deleteFile(outName);}catch{}
-        // Fall through to encode below
       }
     }
     
     if (!usedFastCopy) {
       args = ['-i', inName];
       if (isAudioOut) {
-        // Audio only
         args.push('-vn');
         if (item.out === 'mp3') args.push('-c:a', 'libmp3lame', '-q:a', speedMode==='fast'?'4':'2');
         else if (item.out === 'wav' || item.out === 'aiff') args.push('-c:a', 'pcm_s16le');
@@ -1487,7 +1206,6 @@ async function convertV(id) {
         else if (item.out === 'alac') args.push('-c:a', 'alac');
         else args.push('-c:a', 'aac', '-b:a', audioBR);
       } else {
-        // Video
         if (item.out === 'gif') {
           const gifBase = [];
           if (vRotate === '90') gifBase.push('transpose=1');
@@ -1498,34 +1216,23 @@ async function convertV(id) {
           gifBase.push('fps=10','scale=480:-1:flags=lanczos');
           args.push('-vf', gifBase.join(','), '-c:v', 'gif', '-t', '15');
         } else if (item.out === 'webm') {
-          if (scaleFilter) {
-            args.push('-vf', scaleFilter);
-          }
+          if (scaleFilter) args.push('-vf', scaleFilter);
           args.push('-c:v', 'libvpx', '-crf', crf, '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8');
           if (removeAudio) args.push('-an'); else args.push('-c:a', 'libvorbis', '-b:a', audioBR);
         } else if (item.out === 'wmv') {
-          if (scaleFilter) {
-            args.push('-vf', scaleFilter);
-          }
+          if (scaleFilter) args.push('-vf', scaleFilter);
           args.push('-c:v', 'wmv2', '-b:v', '2000k');
           if (removeAudio) args.push('-an'); else args.push('-c:a', 'wmav2', '-b:a', audioBR);
         } else if (item.out === 'flv') {
-          if (scaleFilter) {
-            args.push('-vf', scaleFilter);
-          }
+          if (scaleFilter) args.push('-vf', scaleFilter);
           args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset);
           if (removeAudio) args.push('-an'); else args.push('-c:a', 'aac', '-b:a', audioBR, '-ar', '44100');
         } else if (['mpg','mpeg','ts','mts','mxf'].includes(item.out)) {
-          if (scaleFilter) {
-            args.push('-vf', scaleFilter);
-          }
+          if (scaleFilter) args.push('-vf', scaleFilter);
           args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset);
           if (removeAudio) args.push('-an'); else args.push('-c:a', 'mp2', '-b:a', audioBR);
         } else {
-          // Default: mp4, mov, mkv, avi, m4v, 3gp etc - use h264 + aac
-          if (scaleFilter) {
-            args.push('-vf', scaleFilter);
-          }
+          if (scaleFilter) args.push('-vf', scaleFilter);
           args.push('-c:v', 'libx264', '-crf', crf, '-preset', preset);
           if (removeAudio) args.push('-an'); else args.push('-c:a', 'aac', '-b:a', audioBR);
           args.push('-movflags', '+faststart');
@@ -1560,94 +1267,14 @@ function setupDrop(el, input, handler) {
   input.onchange = e => handler(e.target.files);
 }
 
-// Video rotation listeners for live preview
 document.getElementById('vRotate')?.addEventListener('change', updateVPreviewTransform);
 document.getElementById('vFlipH')?.addEventListener('change', updateVPreviewTransform);
 document.getElementById('vFlipV')?.addEventListener('change', updateVPreviewTransform);
 
 setupDrop(vDrop, vInput, addVFiles);
-
-// ——— IMAGE ———
-const iDrop = document.getElementById('iDrop');
-const iInput = document.getElementById('iInput');
-const iWorkspace = document.getElementById('iWorkspace');
-const iCanvas = document.getElementById('imgCanvas');
-const iCtx = iCanvas.getContext('2d');
-const cropOverlay = document.getElementById('cropOverlay');
-const cropHandle = document.getElementById('cropHandle');
-let imgObj=null, origW=0, origH=0, rotation=0, flipH=false, flipV=false, lastW=0, lastH=0, currentImageUrl=null, drawPending=false;
-let cropRect=null, appliedCrop=null, cropDragging=null, cropStart=null, history=[], future=[];
-const keepChk=document.getElementById('keepAspect'), fitBox=document.getElementById('fitBox'), fitSel=document.getElementById('iFit'), bgInput=document.getElementById('iBg'), bgHex=document.getElementById('bgHex');
-function state(){return {w:+document.getElementById('iW').value||origW,h:+document.getElementById('iH').value||origH,keep:keepChk.checked,fit:fitSel.value,bg:bgInput.value,crop:document.getElementById('iCrop').value,bright:+document.getElementById('iBright').value,quality:+document.getElementById('iQuality').value,format:document.getElementById('iFormat').value,rotation,flipH,flipV,cropRect:cropRect&&{...cropRect},appliedCrop:appliedCrop&&{...appliedCrop}}}
-function restore(st){if(!st)return; document.getElementById('iW').value=st.w;document.getElementById('iH').value=st.h;keepChk.checked=st.keep;fitSel.value=st.fit;bgInput.value=st.bg;bgHex.textContent=st.bg;document.getElementById('iCrop').value=st.crop;document.getElementById('iBright').value=st.bright;document.getElementById('iQuality').value=st.quality;document.getElementById('iQVal').textContent=st.quality+'%';document.getElementById('iFormat').value=st.format;rotation=st.rotation;flipH=st.flipH;flipV=st.flipV;cropRect=st.cropRect&&{...st.cropRect};appliedCrop=st.appliedCrop&&{...st.appliedCrop};lastW=lastH=0;updateFitVisibility(false);drawImage();}
-function commit(){if(!imgObj)return;history.push(state());if(history.length>40)history.shift();future=[];updateHistory();}
-function updateHistory(){document.getElementById('iUndo').disabled=history.length===0;document.getElementById('iRedo').disabled=future.length===0;}
-function change(fn){if(!imgObj)return;history.push(state());if(history.length>40)history.shift();future=[];fn();updateHistory();drawImage();}
-function updateFitVisibility(redraw=true){fitBox.classList.toggle('show',!keepChk.checked);if(redraw)drawImage();}
-keepChk.onchange=()=>change(()=>updateFitVisibility(false)); bgInput.oninput=()=>{bgHex.textContent=bgInput.value;scheduleDraw()}; fitSel.onchange=()=>change(()=>{});
-function addIFiles(list){if(!list?.[0])return;const file=list[0];if(!file.type.startsWith('image/'))return;if(currentImageUrl)URL.revokeObjectURL(currentImageUrl);const url=URL.createObjectURL(file);currentImageUrl=url;const img=new Image();img.onload=()=>{origW=img.width;origH=img.height;imgObj=img;rotation=0;flipH=false;flipV=false;cropRect=null;appliedCrop=null;history=[];future=[];updateHistory();iDrop.classList.add('hidden');iWorkspace.style.display='block';document.getElementById('iW').value=origW;document.getElementById('iH').value=origH;document.getElementById('iCrop').value='none';document.getElementById('iBright').value=100;keepChk.checked=true;lastW=lastH=0;updateFitVisibility(false);drawImage()};img.onerror=()=>alert('Could not load this image.');img.src=url;}
-function scheduleDraw(){if(drawPending)return;drawPending=true;requestAnimationFrame(()=>{drawPending=false;drawImage()})}
-function setPresetCrop(val){if(val==='none'){cropRect=null;return}let ratio=val==='custom'&&cropRect?cropRect.w/cropRect.h:null;if(!ratio&&val!=='custom'){const [a,b]=val.split(':').map(Number);ratio=a/b}if(!ratio){cropRect={x:origW*.1,y:origH*.1,w:origW*.8,h:origH*.8};return}let w=origW,h=w/ratio;if(h>origH){h=origH;w=h*ratio}cropRect={x:(origW-w)/2,y:(origH-h)/2,w,h}}
-function drawImage(){if(!imgObj)return;let targetW=parseInt(document.getElementById('iW').value,10)||origW,targetH=parseInt(document.getElementById('iH').value,10)||origH;targetW=Math.max(1,targetW);targetH=Math.max(1,targetH);const baseSrc=appliedCrop||{x:0,y:0,w:origW,h:origH};if(keepChk.checked){if(targetW!==lastW){targetH=Math.round(targetW*baseSrc.h/baseSrc.w)||1;document.getElementById('iH').value=targetH}else if(targetH!==lastH){targetW=Math.round(targetH*baseSrc.w/baseSrc.h)||1;document.getElementById('iW').value=targetW}}lastW=targetW;lastH=targetH;
-const cropVal=document.getElementById('iCrop').value;if(cropVal!=='none'&&!cropRect&&!appliedCrop)setPresetCrop(cropVal);if(cropVal==='none')cropRect=null;// A crop selection is only an overlay. The image is not actually cropped until APPLY CROP is clicked.
-let src=appliedCrop||{x:0,y:0,w:origW,h:origH};iCanvas.width=targetW;iCanvas.height=targetH;const bright=document.getElementById('iBright').value;iCtx.save();iCtx.clearRect(0,0,targetW,targetH);if(!keepChk.checked&&fitSel.value==='contain'){iCtx.fillStyle=bgInput.value;iCtx.fillRect(0,0,targetW,targetH)}iCtx.filter=`brightness(${bright}%)`;iCtx.translate(targetW/2,targetH/2);if(flipH)iCtx.scale(-1,1);if(flipV)iCtx.scale(1,-1);iCtx.rotate(rotation*Math.PI/180);if(keepChk.checked||fitSel.value==='cover'){iCtx.drawImage(imgObj,src.x,src.y,src.w,src.h,-targetW/2,-targetH/2,targetW,targetH)}else if(fitSel.value==='contain'){const sc=Math.min(targetW/src.w,targetH/src.h),dw=src.w*sc,dh=src.h*sc;iCtx.drawImage(imgObj,src.x,src.y,src.w,src.h,-dw/2,-dh/2,dw,dh)}else{iCtx.drawImage(imgObj,src.x,src.y,src.w,src.h,-targetW/2,-targetH/2,targetW,targetH)}iCtx.restore();syncCropOverlay();const applyBtn=document.getElementById('iApplyCrop');applyBtn.style.display=cropRect?'inline-flex':'none';applyBtn.textContent=cropRect?'✓ APPLY CROP & COMMIT':'✓ APPLY CROP & COMMIT';document.getElementById('iInfo').textContent=`Output ${targetW}×${targetH}${cropRect?' · selection '+Math.round(cropRect.w)+'×'+Math.round(cropRect.h)+' — click APPLY CROP to commit':''} · ${document.getElementById('iFormat').value.split('/')[1].toUpperCase()}`;}
-function syncCropOverlay(){if(!cropRect){cropOverlay.classList.remove('show');return}const wrap=iCanvas.getBoundingClientRect(),parent=iCanvas.parentElement.getBoundingClientRect();cropOverlay.classList.add('show');cropOverlay.style.left=(wrap.left-parent.left+cropRect.x/origW*wrap.width)+'px';cropOverlay.style.top=(wrap.top-parent.top+cropRect.y/origH*wrap.height)+'px';cropOverlay.style.width=(cropRect.w/origW*wrap.width)+'px';cropOverlay.style.height=(cropRect.h/origH*wrap.height)+'px';}
-function cropPointer(e){const r=iCanvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*origW,y:(e.clientY-r.top)/r.height*origH}}
-function cropStartAction(type,e){if(!cropRect)return;e.preventDefault();history.push(state());future=[];cropDragging=type;cropStart={p:cropPointer(e),rect:{...cropRect}};cropOverlay.setPointerCapture?.(e.pointerId)}
-cropOverlay.addEventListener('pointerdown',e=>{if(e.target===cropHandle)return;cropStartAction('move',e)});cropHandle.addEventListener('pointerdown',e=>cropStartAction('resize',e));window.addEventListener('pointermove',e=>{if(!cropDragging||!cropStart)return;const p=cropPointer(e),dx=p.x-cropStart.p.x,dy=p.y-cropStart.p.y,r={...cropStart.rect};if(cropDragging==='move'){r.x=Math.max(0,Math.min(origW-r.w,r.x+dx));r.y=Math.max(0,Math.min(origH-r.h,r.y+dy))}else{r.w=Math.max(20,Math.min(origW-r.x,r.w+dx));r.h=Math.max(20,Math.min(origH-r.y,r.h+dy));const val=document.getElementById('iCrop').value;if(val!=='custom'&&val!=='none'){const [a,b]=val.split(':').map(Number);r.h=r.w*b/a;if(r.y+r.h>origH){r.h=origH-r.y;r.w=r.h*a/b}}}cropRect=r;drawImage()});window.addEventListener('pointerup',()=>{if(cropDragging){cropDragging=null;cropStart=null;updateHistory()}});
-document.getElementById('iW').addEventListener('change',()=>change(()=>{}));document.getElementById('iH').addEventListener('change',()=>change(()=>{}));document.getElementById('iW').addEventListener('input',scheduleDraw);document.getElementById('iH').addEventListener('input',scheduleDraw);document.getElementById('iCrop').onchange=e=>change(()=>setPresetCrop(e.target.value));document.getElementById('iBright').onchange=()=>commit();document.getElementById('iBright').oninput=scheduleDraw;document.getElementById('iFormat').onchange=()=>change(()=>{});document.getElementById('iQuality').oninput=e=>{document.getElementById('iQVal').textContent=e.target.value+'%';scheduleDraw()};document.getElementById('iQuality').onchange=()=>commit();
-document.getElementById('iRotate').onclick=()=>change(()=>rotation=(rotation+90)%360);document.getElementById('iFlipH').onclick=()=>change(()=>flipH=!flipH);document.getElementById('iFlipV').onclick=()=>change(()=>flipV=!flipV);document.getElementById('iApplyCrop').onclick=()=>{
-  if(!cropRect || !imgObj){return;}
-  const {x,y,w,h} = cropRect;
-  const tmp = document.createElement('canvas');
-  tmp.width = Math.round(w);
-  tmp.height = Math.round(h);
-  const tCtx = tmp.getContext('2d');
-  tCtx.drawImage(imgObj, x, y, w, h, 0, 0, w, h);
-  const newImg = new Image();
-  newImg.onload = ()=>{
-    history.push(state());
-    imgObj = newImg;
-    origW = Math.round(w);
-    origH = Math.round(h);
-    cropRect = null;
-    document.getElementById('iCrop').value='none';
-    document.getElementById('iW').value = origW;
-    document.getElementById('iH').value = origH;
-    lastW = origW; lastH = origH;
-    updateHistory();
-    drawImage();
-    document.getElementById('iInfo').textContent=`Crop applied: ${origW}×${origH} · Undo available`;
-  };
-  newImg.src = tmp.toDataURL();
-};
-
-document.getElementById('iUndo').onclick=()=>{if(!history.length)return;future.push(state());restore(history.pop());updateHistory()};document.getElementById('iRedo').onclick=()=>{if(!future.length)return;history.push(state());restore(future.pop());updateHistory()};
-document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>change(()=>{document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));p.classList.add('active');document.getElementById('iW').value=p.dataset.w;document.getElementById('iH').value=p.dataset.h;lastW=lastH=0}));
-document.getElementById('iDownload').onclick=()=>{const format=document.getElementById('iFormat').value,q=+document.getElementById('iQuality').value/100,ext=format.split('/')[1].replace('jpeg','jpg');iCanvas.toBlob(blob=>{if(!blob)return alert('Could not create the image file.');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`converted-${Date.now()}.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},format,(format==='image/jpeg'||format==='image/webp')?q:undefined)};
-document.getElementById('iReset').onclick=()=>change(()=>{document.getElementById('iW').value=origW;document.getElementById('iH').value=origH;rotation=0;flipH=false;flipV=false;cropRect=null;appliedCrop=null;document.getElementById('iCrop').value='none';document.getElementById('iBright').value=100;keepChk.checked=true;lastW=lastH=0;document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));updateFitVisibility(false)});
-document.getElementById('iNew').onclick=()=>{iWorkspace.style.display='none';iDrop.classList.remove('hidden');imgObj=null;cropRect=null;appliedCrop=null;history=[];future=[];updateHistory();cropOverlay.classList.remove('show');if(currentImageUrl){URL.revokeObjectURL(currentImageUrl);currentImageUrl=null}iInput.value=''};
-setupDrop(iDrop,iInput,addIFiles);
-
-// Override: Image tab opens resizeflowcc.html in new window like articles
-document.querySelectorAll('.tabBtn[data-tab="image"]').forEach(btn=>{
-  btn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    window.open('/resizeflowcc.html', '_blank');
-  });
-});
-// Also handle any legacy data-tab image
-document.addEventListener('click', (e)=>{
-  const t = e.target.closest('[data-tab="image"]');
-  if(t){
-    e.preventDefault();
-    window.open('/resizeflowcc.html', '_blank');
-  }
-});
-
 </script>
 
-<!-- Consent Banner - Simple (For EEA, replace with Google Certified CMP like Quantcast/Didomi) -->
+<!-- Consent Banner - Simple -->
 <div id="consentBanner" style="display:none;position:fixed;bottom:16px;left:16px;right:16px;max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:9999;gap:12px;align-items:center;flex-wrap:wrap">
   <div style="flex:1;min-width:220px;font-size:0.9rem">We use cookies for analytics and ads if you accept. <a href="/privacy-policy.html">Privacy policy</a></div>
   <div style="display:flex;gap:8px">
@@ -1671,234 +1298,6 @@ document.addEventListener('click', (e)=>{
   }
   document.getElementById('consentAccept').onclick = function(){ setConsent(true); };
   document.getElementById('consentReject').onclick = function(){ setConsent(false); };
-})();
-</script>
-
-<script>
-// Settings sub-tabs switching
-document.querySelectorAll('.settingsTab').forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll('.settingsTab').forEach(b=>{
-      b.classList.remove('active'); b.style.borderBottom='none'; b.style.color='var(--muted)'; b.style.fontWeight='400';
-    });
-    btn.classList.add('active'); btn.style.borderBottom='2px solid var(--primary)'; btn.style.color='var(--primary)'; btn.style.fontWeight='700';
-    const tab=btn.dataset.settingsTab;
-    document.getElementById('settings-resize').style.display = tab==='resize' ? '' : 'none';
-    document.getElementById('settings-crop').style.display = tab==='crop' ? '' : 'none';
-    document.getElementById('settings-transform').style.display = tab==='transform' ? '' : 'none';
-    document.getElementById('settings-compress').style.display = tab==='compress' ? '' : 'none';
-    document.getElementById('settings-enhance').style.display = tab==='enhance' ? '' : 'none';
-    document.getElementById('settings-pdf').style.display = tab==='pdf' ? '' : 'none';
-  };
-});
-// PDF sub-tabs
-document.querySelectorAll('.pdf-tab').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.pdf-tab').forEach(x=>{x.classList.remove('active'); x.style.background='var(--bg)'});
-    b.classList.add('active'); b.style.background='var(--card)';
-    const t=b.dataset.pdfTab;
-    document.getElementById('tab-img2pdf').style.display = t==='img2pdf' ? '' : 'none';
-    document.getElementById('tab-pdf2img').style.display = t==='pdf2img' ? '' : 'none';
-    document.getElementById('tab-merge').style.display = t==='merge' ? '' : 'none';
-  };
-});
-// Replace image button
-document.getElementById('iReplace')?.addEventListener('click',()=>document.getElementById('iInput')?.click() || document.getElementById('iDrop')?.click());
-</script>
-
-
-<script>
-// --- FIXES for upload window, preview, Show Original/Edited, Image Fit, presets ---
-(function(){
-  const iDrop = document.getElementById('iDrop');
-  const iInput = document.getElementById('iInput');
-  const iWorkspace = document.getElementById('iWorkspace');
-  const iCanvas = document.getElementById('imgCanvas');
-  const iReplace = document.getElementById('iReplace');
-  const iShowOriginal = document.getElementById('iShowOriginal');
-  const iShowEdited = document.getElementById('iShowEdited');
-  const loadedInfo = document.getElementById('loadedInfo');
-  const fileNameEl = document.getElementById('fileName');
-  const fileExtEl = document.getElementById('fileExt');
-  const fileSizeEl = document.getElementById('fileSize');
-  const sizeFormatEl = document.getElementById('sizeFormatInfo');
-  
-  if(!iDrop || !iWorkspace || !iCanvas) return;
-  
-  // Ensure initial state: drop visible, workspace hidden (for image tab)
-  // For main site, image tab is hidden, so this is fine. For resizeflowcc, show drop
-  if(iDrop && iWorkspace){
-    // Only set if we're on image tab page or image tab is the active one
-    const isResizePage = window.location.pathname.includes('resizeflowcc');
-    if(isResizePage){
-      iDrop.style.display = 'block';
-      iWorkspace.style.display = 'none';
-    }
-  }
-  
-  // File info update helper
-  function updateFileInfo(file){
-    if(fileNameEl) fileNameEl.textContent = file.name;
-    if(fileExtEl) fileExtEl.textContent = file.name.split('.').pop().toUpperCase();
-    if(fileSizeEl) fileSizeEl.textContent = (file.size/1024/1024).toFixed(2) + ' MB';
-    if(loadedInfo) loadedInfo.textContent = 'Loaded: ' + (fileNameEl ? fileNameEl.textContent : file.name);
-  }
-  
-  // Show Original / Show Edited logic
-  let showingOriginal = false;
-  let originalImageData = null;
-  
-  if(iShowOriginal && iShowEdited){
-    iShowOriginal.onclick = function(){
-      if(!window.imgObj && !window.origImage) {
-        // Try to get imgObj from global scope
-        const img = window.imgObj || window._imgObj;
-        if(!img) return;
-      }
-      showingOriginal = true;
-      iShowOriginal.style.background = 'var(--primary)';
-      iShowOriginal.style.color = 'white';
-      iShowEdited.style.background = '';
-      iShowEdited.style.color = '';
-      // Draw original without edits
-      const canvas = iCanvas;
-      const ctx = canvas.getContext('2d');
-      const img = window.imgObj;
-      if(img){
-        canvas.width = img.naturalWidth || img.width;
-        canvas.height = img.naturalHeight || img.height;
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.drawImage(img, 0,0);
-        if(sizeFormatEl) sizeFormatEl.textContent = canvas.width + ' × ' + canvas.height + ' px | ORIGINAL';
-      }
-    };
-    iShowEdited.onclick = function(){
-      showingOriginal = false;
-      iShowEdited.style.background = 'var(--primary)';
-      iShowEdited.style.color = 'white';
-      iShowOriginal.style.background = '';
-      iShowOriginal.style.color = '';
-      // Trigger redraw with edits
-      if(window.drawImage) window.drawImage();
-      else if(window.scheduleDraw) window.scheduleDraw();
-    };
-  }
-  
-  // Replace Image
-  if(iReplace && iInput){
-    iReplace.onclick = function(){ iInput.click(); };
-  }
-  
-  // Image Fit radio handling - create if not exists
-  // Look for existing Image Fit section or create one
-  let imageFitContainer = document.querySelector('#settings-resize');
-  if(imageFitContainer && !document.querySelector('input[name="imageFit"]')){
-    // Create Image Fit radio group like screenshot 4
-    const fitHTML = `
-      <div style="margin:12px 0;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-        <div style="font-size:0.85rem;font-weight:700;margin-bottom:8px">Image Fit</div>
-        <label style="display:flex;gap:8px;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--bg)">
-          <input type="radio" name="imageFit" value="background" checked>
-          <div style="flex:1"><div style="font-weight:600;font-size:0.8rem">Background Fill</div><div style="font-size:0.7rem;color:var(--muted)">Keep the entire image visible and fill empty space.</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px"><input type="color" id="bgColorPick" value="#000000" style="width:40px;height:24px"><span style="font-size:0.7rem;color:var(--muted)">#000000</span><button style="padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);font-size:0.7rem">Pick Color</button></div></div>
-        </label>
-        <label style="display:flex;gap:8px;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--bg)">
-          <input type="radio" name="imageFit" value="transparent">
-          <div style="flex:1"><div style="font-weight:600;font-size:0.8rem">Transparent</div><div style="font-size:0.7rem;color:var(--muted)">Keep image visible with transparent background (PNG, WebP, AVIF, SVG).</div></div>
-        </label>
-        <label style="display:flex;gap:8px;padding:10px;border:1px solid var(--primary);border-radius:10px;cursor:pointer;background:var(--bg);outline:2px solid rgba(37,99,235,0.2)">
-          <input type="radio" name="imageFit" value="crop" checked>
-          <div style="flex:1"><div style="font-weight:600;font-size:0.8rem">Crop</div><div style="font-size:0.7rem;color:var(--muted)">Fill area while preserving proportions. Excess image will be cropped.</div></div>
-        </label>
-      </div>
-    `;
-    // Insert after Resize Dimensions
-    const resizeDims = imageFitContainer.querySelector('div');
-    // Find after the second input grid
-    const grids = imageFitContainer.querySelectorAll('div[style*="grid-template-columns:1fr 1fr"]');
-    if(grids[0]){
-      grids[0].insertAdjacentHTML('afterend', fitHTML);
-    }
-  }
-  
-  // Preset handling - should uncheck Keep Aspect Ratio and set fit to Crop, like screenshot 4
-  document.querySelectorAll('.preset').forEach(btn=>{
-    btn.addEventListener('click', function(){
-      // Uncheck Keep Aspect Ratio when preset chosen (like in screenshot 4)
-      const keepChk = document.getElementById('keepAspect');
-      if(keepChk) keepChk.checked = false;
-      
-      // Set Image Fit to Crop
-      const cropRadio = document.querySelector('input[name="imageFit"][value="crop"]');
-      if(cropRadio) cropRadio.checked = true;
-      
-      // Update fit select if exists
-      const fitSel = document.getElementById('iFit');
-      if(fitSel) fitSel.value = 'cover';
-      
-      // Update dimensions
-      const w = this.dataset.w;
-      const h = this.dataset.h;
-      const iW = document.getElementById('iW');
-      const iH = document.getElementById('iH');
-      if(iW) iW.value = w;
-      if(iH) iH.value = h;
-      
-      // Trigger draw
-      if(window.change) window.change(()=>{});
-      else if(window.drawImage) window.drawImage();
-      else if(window.scheduleDraw) window.scheduleDraw();
-      
-      // Visual feedback - highlight selected preset
-      document.querySelectorAll('.preset').forEach(p=>{p.style.borderColor='var(--border)'; p.style.outline='none';});
-      this.style.borderColor='var(--primary)';
-      this.style.outline='2px solid rgba(37,99,235,0.3)';
-      
-      // Update output info
-      const sizeFormatEl = document.getElementById('sizeFormatInfo');
-      if(sizeFormatEl) sizeFormatEl.textContent = w + ' × ' + h + ' px | PNG - Output ' + w + '×' + h + ' · PNG';
-    });
-  });
-  
-  // Fix preview not showing - ensure drawImage is called after image load and canvas is visible
-  const originalAddIFiles = window.addIFiles;
-  if(window.addIFiles){
-    window.addIFiles = function(list){
-      if(!list || !list[0]) return;
-      const file = list[0];
-      updateFileInfo(file);
-      // Call original
-      originalAddIFiles(list);
-      // Ensure workspace visible and drop hidden after a short delay
-      setTimeout(()=>{
-        if(iDrop) iDrop.style.display = 'none';
-        if(iWorkspace) iWorkspace.style.display = 'block';
-        // Force redraw
-        setTimeout(()=>{
-          if(window.drawImage) window.drawImage();
-          // Ensure canvas has content
-          const canvas = document.getElementById('imgCanvas');
-          if(canvas && canvas.width===0){
-            canvas.width = 400;
-            canvas.height = 300;
-          }
-        }, 100);
-      }, 50);
-    };
-  }
-  
-  // Ensure iDrop click opens file picker
-  if(iDrop && iInput){
-    iDrop.addEventListener('click', function(e){
-      if(e.target.tagName==='BUTTON' || e.target.tagName==='INPUT') return;
-      // Don't trigger if clicking inside workspace
-      if(iWorkspace.style.display==='block' && iWorkspace.contains(e.target)) return;
-      iInput.click();
-    });
-  }
-  
-  // Fix Show Original - store original image
-  // Override image load to store original
-  const origOnload = window.Image ? window.Image.prototype.onload : null;
 })();
 </script>
 
