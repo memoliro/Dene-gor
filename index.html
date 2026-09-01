@@ -849,89 +849,47 @@ async function resetFFmpeg() {
   loaded = false;
 }
 
-async function checkWorkerAssetsPresent() {
-  const files = ['worker.js', 'const.js', 'errors.js'];
-  for (const f of files) {
-    const url = new URL(`/ffmpeg/${f}`, location.origin).href;
-    let res;
-    try {
-      res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-    } catch (e) {
-      throw new Error(`Could not reach ${f} at ${url} (network error: ${e.message}).`);
-    }
-    if (!res.ok) {
-      throw new Error(`${f} returned HTTP ${res.status} at ${url}. Make sure worker.js, const.js, and errors.js are all deployed under /ffmpeg/ on this domain.`);
-    }
-    const ct = res.headers.get('content-type') || '';
-    if (ct.includes('text/html')) {
-      throw new Error(`${f} was served as HTML (content-type "${ct}") — this usually means the file is missing and your host's SPA fallback returned index.html instead of a 404.`);
-    }
-  }
-}
-
 function withTimeout(promise, ms, label) {
   let timer;
   const timeout = new Promise((_, reject) => {
-    timer = setTimeout(() => reject(new Error(`${label} timed out after ${Math.round(ms / 1000)}s. Check your network connection or whether cdn.jsdelivr.net is reachable/blocked.`)), ms);
+    timer = setTimeout(() => reject(new Error(`${label} timed out after ${Math.round(ms / 1000)}s. Check network or cdn.jsdelivr.net`)), ms);
   });
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 async function loadCoreFrom() {
-  // classWorkerURL must be same-origin — browsers hard-block cross-origin
-  // Worker construction regardless of CORS headers, which is why pointing
-  // it straight at jsDelivr failed with "Failed to construct 'Worker'".
-  //
-  // worker.js itself has exactly two dependencies — const.js and errors.js —
-  // both tiny leaf files with no further imports. All three must be
-  // self-hosted together under /ffmpeg/ (this repo ships them there).
-  await checkWorkerAssetsPresent();
-  const classWorkerURL = new URL('/ffmpeg/worker.js', location.origin).href;
+  // FIXED FOR CLOUDFLARE PAGES: No more /ffmpeg/ self-hosted files needed.
+  // We blobify the classWorker from CDN so it becomes same-origin blob: URL
+  // This avoids the "worker.js was served as HTML" SPA fallback error.
+  const FFMPEG_CDN = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm';
+  const classWorkerURL = await withTimeout(
+    toBlobURL(`${FFMPEG_CDN}/worker.js`, 'text/javascript'),
+    15000,
+    'Downloading FFmpeg worker'
+  );
 
-  // Multi-threaded FFmpeg core (@ffmpeg/core-mt) spreads work across CPU
-  // cores via SharedArrayBuffer, which requires the page to be served with
-  // COOP/COEP headers (window.crossOriginIsolated === true). We feature-
-  // detect rather than assume — if those headers aren't set (e.g. they'd
-  // conflict with ad-network iframes), this automatically and silently
-  // falls back to the single-threaded core with no user-visible difference
-  // other than speed.
-  const useMultiThread = window.crossOriginIsolated === true;
-  const corePkg = useMultiThread ? '@ffmpeg/core-mt' : '@ffmpeg/core';
+  // Use single-threaded only on Pages (multi-thread needs COOP/COEP headers which break AdSense)
+  // If you want MT, add _headers file with COOP/COEP and set useMultiThread = crossOriginIsolated
+  const useMultiThread = false;
+  const corePkg = '@ffmpeg/core';
   const CORE_CDN_BASE = `https://cdn.jsdelivr.net/npm/${corePkg}@0.12.6/dist/esm`;
 
-  // ffmpeg-core.js/.wasm (the ~31MB core) are loaded from a CDN via
-  // toBlobURL, which uses fetch() (not the Worker constructor) so it isn't
-  // subject to the same-origin restriction above. This also avoids
-  // Cloudflare Pages' 25 MiB per-file limit, since the huge wasm never has
-  // to be deployed as a static asset. The -mt build additionally needs a
-  // third file (ffmpeg-core.worker.js) for its internal pthread workers —
-  // this one IS published as a proper self-contained artifact by
-  // @ffmpeg/core-mt, so blobifying it directly is safe (unlike
-  // @ffmpeg/ffmpeg's own worker.js).
-  const coreUrls = [
-    toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.js`, 'text/javascript'),
-    toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
-  ];
-  if (useMultiThread) {
-    coreUrls.push(toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.worker.js`, 'text/javascript'));
-  }
-
-  const [coreURL, wasmURL, workerURL] = await withTimeout(
-    Promise.all(coreUrls),
+  const [coreURL, wasmURL] = await withTimeout(
+    Promise.all([
+      toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.js`, 'text/javascript'),
+      toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
+    ]),
     45000,
     'Downloading FFmpeg core from CDN'
   );
 
-  const loadOpts = { coreURL, wasmURL, classWorkerURL };
-  if (useMultiThread) loadOpts.workerURL = workerURL;
-
   await withTimeout(
-    ffmpeg.load(loadOpts),
-    25000,
+    ffmpeg.load({ coreURL, wasmURL, classWorkerURL }),
+    30000,
     'FFmpeg engine load'
   );
 
-  ffmpegMultiThreaded = useMultiThread;
+  ffmpegMultiThreaded = false;
 }
 
 async function loadFFmpeg(forceFresh = false) {
