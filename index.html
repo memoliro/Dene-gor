@@ -3,50 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Video & Audio Converter — Private MP4, MOV, MP3, GIF | FreeOnlineConverters.cc</title>
-<meta name="description" content="Convert video and audio 100% privately in your browser. No uploads. MP4, MOV, MKV, WebM, MP3, WAV, GIF, with trim, rotate, flip, mute, compress. FFmpeg.wasm + WebCodecs.">
-<link rel="canonical" href="https://freeonlineconverters.cc/">
+<meta name="description" content="Convert video, audio and images privately in your browser. No uploads, no tracking. Free MP4, MOV, MP3, GIF, PNG, JPG, WebP, AVIF converter with resize, crop and compress.">
 <meta name="theme-color" content="#0b1120">
-<meta property="og:title" content="Free Private Video Converter — No Upload, With Preview & Flip">
-<meta property="og:description" content="Convert video/audio entirely in your browser. Rotate, flip H/V, remove audio, change resolution. Files never leave your device.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://freeonlineconverters.cc/">
-<meta property="og:image" content="https://freeonlineconverters.cc/og-cover.png">
-<meta name="twitter:card" content="summary_large_image">
+<title>FreeOnlineConverters.cc.cc — Free Private Video, Audio & Image Converter</title>
+<link rel="canonical" href="https://freeonlineconverters.cc/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
 
 <script>
-// Early theme to prevent flash
+// 1. Early theme to prevent flash - must be first
 (function(){
   try{
     var saved = localStorage.getItem('theme');
-    if(!saved) saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if(!saved){
+      saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
     document.documentElement.setAttribute('data-theme', saved);
-  }catch(e){ document.documentElement.setAttribute('data-theme', 'dark'); }
+  }catch(e){
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
 })();
 </script>
 
 <script>
-// Consent Mode v2 default - MUST be before gtag and ads
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('consent','default',{
-  ad_storage:'denied',
-  ad_user_data:'denied',
-  ad_personalization:'denied',
-  analytics_storage:'denied',
-  functionality_storage:'granted',
-  security_storage:'granted'
-});
+// 2. Consent Mode v2 default - MUST be before gtag and adsbygoogle
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{
+    ad_storage:'denied',
+    ad_user_data:'denied',
+    ad_personalization:'denied',
+    analytics_storage:'denied',
+    functionality_storage:'granted',
+    security_storage:'granted'
+  });
 </script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q6QJX3F5R3"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-Q6QJX3F5R3', { anonymize_ip: true });
+</script>
+
+<!-- AdSense - load ONCE only -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4747106371991816" crossorigin="anonymous"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-
 <style>
-
 :root {
   --bg: #f1f5f9;
   --bg-elevated: #ffffff;
@@ -528,62 +534,23 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
 @media (max-width: 720px) {
   .navLinks { display: none; }
 }
-
-/* --- Fixes & additions for cleaned version --- */
-.tabBtn{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
-.fileCard{display:flex;gap:12px;align-items:center;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:12px}
-.fileThumb{width:84px;height:56px;border-radius:8px;object-fit:cover;background:var(--bg-elevated);border:1px solid var(--border);cursor:pointer;flex-shrink:0;transition:transform 0.25s}
-.fileThumb.audio{display:flex;align-items:center;justify-content:center;font-size:1.5rem}
-.fileMeta{flex:1;min-width:0} .fileMeta b{display:block;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.meta{display:flex;gap:8px;font-size:0.75rem;color:var(--muted);margin-top:2px;flex-wrap:wrap}
-.status-pill{padding:2px 8px;border-radius:999px;font-size:0.7rem;font-weight:600;text-transform:uppercase}
-.status-ready{background:var(--bg);border:1px solid var(--border)} .status-converting{background:var(--primary-soft);color:var(--primary)} .status-done{background:var(--success-soft);color:var(--success-text)} .status-error{background:#fee2e2;color:#991b1b}
-.fileActions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.85rem}
-.btn:disabled{opacity:0.5;cursor:not-allowed}
-.btn-blue{background:var(--primary);color:white;border:0} .btn-green{background:var(--success);color:white;border:0} .btn-ghost{background:transparent}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.playerModal{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
-.playerModal.show{display:flex} .playerModal-inner{background:var(--card);border-radius:16px;overflow:hidden;max-width:900px;width:100%;box-shadow:var(--shadow-lg)}
-.playerModal-inner video{width:100%;max-height:70vh;display:block;background:black}
-.playerModal-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--border)}
-.progress-wrap{height:6px;background:var(--bg);border-radius:999px;overflow:hidden;margin:12px 0;display:none} .progress-wrap.show{display:block} .progress-bar{height:100%;background:var(--primary);width:0%;transition:width 0.3s}
-.drop.dragover{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.01)}
-.ad-slot{min-height:280px;background:var(--bg);border:1px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.8rem;margin:16px 0}
 </style>
-
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"SoftwareApplication",
-  "name":"Free Private Video & Audio Converter",
-  "operatingSystem":"Web Browser",
-  "applicationCategory":"MultimediaApplication",
-  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
-  "description":"Convert video and audio 100% privately in your browser with rotate, flip, mute, resolution change. MP4, MOV, MKV, WebM, MP3, WAV, GIF. No upload.",
-  "featureList":"rotate video, flip horizontal vertical, remove audio mute, change resolution 4K 1080p 720p, hardware acceleration, interactive preview",
-  "url":"https://freeonlineconverters.cc/",
-  "isAccessibleForFree": true
-}
-</script>
 </head>
 <body>
 <header class="header">
   <div class="wrap hrow">
     <div class="logoRow">
       <div class="logo" aria-hidden="true">C</div>
-      <div class="brand">FreeOnlineConverters</div>
-      <span class="badge">100% Private</span>
-      <nav class="tabs" role="tablist" aria-label="Converter type">
-        <a href="/" class="tabBtn active" aria-current="page" role="tab" aria-selected="true">🎬 Video & Audio</a>
-        <a href="/image-resizer.html" class="tabBtn" role="tab" aria-selected="false">🖼️ Image Resizer</a>
-        <a href="/pdf-tools.html" class="tabBtn" role="tab" aria-selected="false">📄 PDF Tools</a>
-      </nav>
+      <div class="brand">FreeOnlineConverters.cc.cc</div>
+      <span class="badge">100% PRIVATE</span>
+      <div class="tabs" role="tablist" aria-label="Converter type">
+        <button type="button" class="tabBtn active" data-tab="video" role="tab" aria-selected="true">🎬 Video & Audio</button>
+        <a href="/image-resizer.html" class="tabBtn" role="tab" style="text-decoration:none;display:inline-flex;align-items:center">🖼️ Image Resizer</a>
+        <a href="/pdf-tools.html" class="tabBtn" role="tab" style="text-decoration:none;display:inline-flex;align-items:center">📄 PDF Tools</a>
+      </div>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
-      <nav class="navLinks" style="display:flex;gap:12px;font-size:0.85rem">
+      <nav class="navLinks">
         <a href="#articles">Articles</a>
         <a href="/about.html">About</a>
       </nav>
@@ -592,23 +559,26 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
   </div>
 </header>
 
-<div class="wrap" style="padding:28px 20px">
+<div class="wrap" style="padding-top: 20px">
+  <!-- freeonlineconverters - Header Banner -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4747106371991816"
+       data-ad-slot="6200944786"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="wrap" style="padding: 28px 20px 0">
   <div class="grid2">
     <main>
+      <!-- VIDEO TAB -->
       <div id="videoTab">
         <div class="card">
-          <h1 class="hero-title">Video & Audio Converter — Private by Design</h1>
-          <p class="hero-sub">Convert formats entirely in your browser. Rotate, flip, mute, change resolution. Nothing leaves your device.</p>
+          <h1 class="hero-title">Video & Audio Converter</h1>
+          <p class="hero-sub">Convert formats entirely in your browser. Nothing leaves your device.</p>
           
-          <div id="engineBanner" class="engineBanner loading">
-            <div class="eb-icon">⚙️</div>
-            <div class="eb-body">
-              <div id="engineTitle" class="eb-title">Engine not loaded yet</div>
-              <div id="engineDesc" class="eb-desc">Add a file to load the engine (30MB, cached after first load). WAV exports work instantly without engine.</div>
-            </div>
-            <button type="button" id="engineRetry" class="btn btn-ghost" style="display:none">Retry</button>
-          </div>
-
           <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0 8px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:12px">
             <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="webcodecsToggle" checked> <span>🚀 Hardware Acceleration</span></label>
             <span style="font-weight:600">Speed:</span>
@@ -636,23 +606,23 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
               <option value="180">180°</option>
               <option value="270">270° ↺</option>
             </select>
-            <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="vFlipH"> <span>↔ Flip H (mirror)</span></label>
+            <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="vFlipH"> <span>↔ Flip H</span></label>
             <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="vFlipV"> <span>↕ Flip V</span></label>
-            <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="removeAudioToggle"> <span>🔇 Remove audio / mute</span></label>
+            <label style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:8px;cursor:pointer"><input type="checkbox" id="removeAudioToggle"> <span>🔇 Remove audio</span></label>
           </div>
           <div id="webcodecsStatus" style="text-align:center;font-size:11px;color:var(--muted);margin-bottom:8px"></div>
           <div class="privacy-pills">
             <span class="pill">🔒 No upload</span>
             <span class="pill">Best under 500 MB</span>
-            <span class="pill">Preview + Flip + Rotate + Mute</span>
+            <span class="pill">Files stay on device</span>
           </div>
 
-          <div class="progress-wrap" id="vProgressWrap"><div class="progress-bar" id="vProgressBar" style="width:0%"></div></div>
+          <div class="progress-wrap" id="vProgressWrap" style="margin-top:-8px;margin-bottom:16px"><div class="progress-bar" id="vProgressBar" style="width:0%"></div></div>
 
           <div id="vDrop" class="drop" tabindex="0" role="button" aria-label="Drop video or audio files">
             <div class="plus">+</div>
             <div class="drop-title">Drop one video or audio file, or click to browse</div>
-            <div class="drop-hint">MP4 · MOV · MKV · WebM · MP3 · WAV · and more — interactive preview, flip, rotate, mute</div>
+            <div class="drop-hint">MP4 · MOV · MKV · WebM · MP3 · WAV · and more</div>
             <input id="vInput" type="file" accept="video/*,audio/*" hidden>
           </div>
 
@@ -663,6 +633,7 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
           <div id="vStatus" class="status-line" aria-live="polite"></div>
         </div>
 
+        <!-- Interactive video player modal -->
         <div id="playerModal" class="playerModal" role="dialog" aria-modal="true" aria-label="Video preview">
           <div class="playerModal-inner">
             <video id="playerVideo" controls playsinline></video>
@@ -673,92 +644,252 @@ button:focus:not(:focus-visible), select:focus:not(:focus-visible) { outline: no
           </div>
         </div>
 
-        <div class="card" style="margin-top:24px">
-          <h2 class="section-title" style="font-size:1.25rem;font-weight:700;margin-bottom:12px">How it works — with all functions</h2>
-          <div class="steps" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
-            <div class="step"><div style="font-weight:700">1. Add file</div><p style="font-size:0.85rem;color:var(--muted)">Drop video/audio. Thumbnail appears instantly with interactive preview (click to play). Nothing uploaded.</p></div>
-            <div class="step"><div style="font-weight:700">2. Transform</div><p style="font-size:0.85rem;color:var(--muted)">Use Rotate (0/90/180/270), Flip H = mirror, Flip V, Resolution (4K→240p), Remove Audio = mute. Live preview shows transform instantly.</p></div>
-            <div class="step"><div style="font-weight:700">3. Convert & Download</div><p style="font-size:0.85rem;color:var(--muted)">Engine loads only after file added (~30MB, cached). Choose MP4/MOV/MP3/GIF etc. Download appears green when done.</p></div>
-          </div>
-          <div style="margin-top:16px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:0.8rem;color:var(--muted)">
-            <strong>Tip:</strong> WAV is instant (no engine) via Web Audio API. MP4→WebM can use 🚀 Hardware Acceleration (GPU) via MediaRecorder if your browser supports it — 3-5x faster. Fast remux (no re-encode) is used when you only change container or remove audio.
+        <div class="card mt-5">
+          <h2 class="section-title">How it works</h2>
+          <div class="steps">
+            <div class="step">
+              <div class="stepNum">1</div>
+              <b>Add files</b>
+              <p>Drop or select video/audio from your computer. The drop zone is replaced by a preview of your files. Nothing is uploaded.</p>
+            </div>
+            <div class="step">
+              <div class="stepNum">2</div>
+              <b>Wait, then convert</b>
+              <p>Wait until the green “Engine ready” banner appears. Convert stays disabled until then. Pick MP4, MOV, MP3 or GIF and click Convert.</p>
+            </div>
+            <div class="step">
+              <div class="stepNum">3</div>
+              <b>Download</b>
+              <p>When conversion finishes, the green Download button appears. Save the file instantly to your device.</p>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- IMAGE TAB -->
+      
+      <div id="imageTab" style="display: block">
+        <div class="card" style="padding:16px;background:var(--card)">
+          <div style="background:#dcfce7;color:#166534;padding:8px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:12px;text-align:center">Loaded: <span id="loadedInfo">1672 × 941 px</span></div>
+          <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start">
+            <!-- LEFT: Canvas -->
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:12px">
+              <div style="background:#0f172a;background-image:linear-gradient(45deg,#1e293b 25%,transparent 25%,transparent 75%,#1e293b 75%,#1e293b),linear-gradient(45deg,#1e293b 25%,transparent 25%,transparent 75%,#1e293b 75%,#1e293b);background-size:20px 20px;background-position:0 0,10px 10px;border-radius:12px;padding:12px;min-height:400px;display:flex;align-items:center;justify-content:center">
+                <div style="position:relative;width:100%">
+                  <canvas id="imgCanvas" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px"></canvas>
+                  <div id="cropOverlay" class="cropOverlay" aria-label="Crop selection"><div id="cropHandle" class="cropHandle"></div></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px">
+                <button id="iReplace" class="btn btn-ghost" style="font-size:0.8rem">Replace Image</button>
+                <button id="iShowOriginal" class="btn btn-ghost" style="font-size:0.8rem">Show Original</button>
+                <button id="iShowEdited" class="btn" style="background:var(--primary);color:white;font-size:0.8rem">Show Edited</button>
+              </div>
+              <div style="margin-top:12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:0.75rem;color:var(--muted)">
+                <div>Size/ Format: <span id="sizeFormatInfo">1672 × 941 px | PNG</span></div>
+                <div id="iInfo" class="status-line" style="margin-top:4px"></div>
+              </div>
+              <div style="margin-top:10px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:10px">
+                <div style="font-size:0.75rem;font-weight:700;margin-bottom:6px">Uploaded file</div>
+                <div style="font-size:0.7rem;color:var(--muted);line-height:1.5">
+                  <div>Name: <span id="fileName">Haydi-don-flamenko-turkce-wide.png</span></div>
+                  <div>Extension: <span id="fileExt">PNG</span> · Size: <span id="fileSize">1.64 MB</span></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+                <button id="iUndo" class="btn btn-ghost" disabled>↶ Undo</button>
+                <button id="iRedo" class="btn btn-ghost" disabled>↷ Redo</button>
+              </div>
+            </div>
+
+            <!-- RIGHT: Image Settings -->
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:16px;padding:14px">
+              <h3 style="font-weight:800;font-size:1.1rem;margin-bottom:10px">Image Settings</h3>
+              <div style="display:flex;gap:12px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:12px;font-size:0.8rem">
+                <button class="settingsTab active" data-settings-tab="resize" style="background:none;border:0;border-bottom:2px solid var(--primary);color:var(--primary);font-weight:700;cursor:pointer;padding:4px 6px">Resize & Convert</button>
+                <button class="settingsTab" data-settings-tab="crop" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Crop</button>
+                <button class="settingsTab" data-settings-tab="transform" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Transform</button>
+                <button class="settingsTab" data-settings-tab="compress" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Compression</button>
+                <button class="settingsTab" data-settings-tab="enhance" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">Enhance</button>
+                <button class="settingsTab" data-settings-tab="pdf" style="background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px">PDF Tools</button>
+              </div>
+
+              <!-- Resize & Convert Panel -->
+              <div id="settings-resize">
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px">
+                  <label style="display:flex;align-items:center;gap:8px;font-size:0.8rem;font-weight:600"><input id="keepAspect" type="checkbox" checked> 🔒 Keep Aspect Ratio <span style="background:#2563eb;color:white;font-size:0.6rem;padding:2px 6px;border-radius:999px">RECOMMENDED</span></label>
+                  <div style="font-size:0.7rem;color:var(--muted);margin-top:4px">Keeps your image proportions correct. Change Width or Height and the other value adjusts automatically.</div>
+                </div>
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px">Resize Dimensions</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+                  <input id="iW" type="number" value="1672" style="padding:10px;border-radius:8px;border:1px solid var(--primary);background:var(--card);color:var(--text)">
+                  <input id="iH" type="number" value="941" style="padding:10px;border-radius:8px;border:1px solid var(--primary);background:var(--card);color:var(--text)">
+                </div>
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px">Social & Standard Presets</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+                  <button class="preset" data-w="1920" data-h="1080" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">YouTube 1920×1080</button>
+                  <button class="preset" data-w="1080" data-h="1920" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Shorts / Reels / TikTok 1080×1920</button>
+                  <button class="preset" data-w="1080" data-h="1080" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Instagram 1080×1080</button>
+                  <button class="preset" data-w="400" data-h="400" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Profile Photo 400×400</button>
+                  <button class="preset" data-w="1200" data-h="628" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">FB / LinkedIn 1200×628</button>
+                  <button class="preset" data-w="1200" data-h="675" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Twitter/X 1200×675</button>
+                  <button class="preset" data-w="3840" data-h="2160" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">4K UHD 3840×2160</button>
+                  <button class="preset" data-w="2160" data-h="3840" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">4K Vertical 2160×3840</button>
+                </div>
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px">Convert Image Format</div>
+                <div style="font-size:0.7rem;color:var(--muted);margin-bottom:4px">Resize and convert formats seamlessly.</div>
+                <select id="iFormat" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--primary);background:var(--card);color:var(--text);margin-bottom:10px">
+                  <option value="image/png" selected>Convert to PNG</option>
+                  <option value="image/jpeg">Convert to JPG</option>
+                  <option value="image/webp">Convert to WebP</option>
+                  <option value="image/avif">Convert to AVIF</option>
+                </select>
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:0.65rem;color:var(--muted);line-height:1.5;margin-bottom:10px">Privacy Notice: EXIF metadata (GPS, camera info) is automatically stripped upon conversion for security and reduced file size. Animated GIFs are flattened to a single frame. AVIF uses a local WASM encoder (slower, often much smaller files).</div>
+                <button id="iResetFormat" class="btn btn-ghost" style="font-size:0.7rem">↺ Reset Resize & Format</button>
+              </div>
+
+              <!-- Crop Panel -->
+              <div id="settings-crop" style="display:none">
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Crop & Transform</div>
+                <select id="iCrop" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px">
+                  <option value="none">No crop</option>
+                  <option value="custom">Custom crop</option>
+                  <option value="1:1">1:1 Square</option>
+                  <option value="16:9">16:9</option>
+                  <option value="9:16">9:16</option>
+                  <option value="4:3">4:3</option>
+                </select>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <button id="iApplyCrop" class="btn" style="background:var(--primary);color:white;display:none">✓ APPLY CROP</button>
+                  <button id="iRotate" class="btn btn-ghost">↻ 90°</button>
+                  <button id="iFlipH" class="btn btn-ghost">Flip H</button>
+                  <button id="iFlipV" class="btn btn-ghost">Flip V</button>
+                </div>
+              </div>
+
+              <!-- Transform Panel -->
+              <div id="settings-transform" style="display:none">
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Transform & Fit</div>
+                <select id="iFit" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px">
+                  <option value="contain">Contain — fit inside + background</option>
+                  <option value="cover">Cover — crop to fill</option>
+                  <option value="stretch">Stretch — distort</option>
+                </select>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:0.7rem">Fill color</span><input id="iBg" type="color" value="#000000"><span id="bgHex" style="font-size:0.7rem;color:var(--muted)">#000000</span></div>
+                <button id="iReset" class="btn btn-ghost">Reset</button>
+              </div>
+
+              <!-- Compression Panel -->
+              <div id="settings-compress" style="display:none">
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Compression</div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:0.7rem;min-width:50px">Quality</span><input id="iQuality" type="range" min="10" max="100" value="90" style="flex:1"><span id="iQVal" style="font-size:0.7rem;font-weight:700">90%</span></div>
+              </div>
+
+              <!-- Enhance Panel -->
+              <div id="settings-enhance" style="display:none">
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">Enhance</div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:0.7rem;min-width:50px">Bright</span><input id="iBright" type="range" min="50" max="150" value="100" style="flex:1"></div>
+              </div>
+
+              <!-- PDF Tools Panel -->
+              <div id="settings-pdf" style="display:none">
+                <div style="font-size:0.8rem;font-weight:700;margin-bottom:8px">PDF Tools — Private, Offline</div>
+                <div style="display:flex;gap:6px;margin-bottom:10px"><button class="pdf-tab active" data-pdf-tab="img2pdf" style="padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:0.7rem;cursor:pointer">Images to PDF</button><button class="pdf-tab" data-pdf-tab="pdf2img" style="padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">PDF to Images</button><button class="pdf-tab" data-pdf-tab="merge" style="padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:0.7rem;cursor:pointer">Merge PDFs</button></div>
+                <div id="tab-img2pdf"><div id="img2pdfDrop" class="drop" style="padding:16px;border:1px dashed var(--border);border-radius:10px;text-align:center;cursor:pointer"><div>🖼️ → 📄 Drop images</div><input id="img2pdfInput" type="file" accept="image/*" multiple hidden></div><div id="img2pdfList" style="margin:8px 0"></div><button id="img2pdfBtn" class="btn" style="background:var(--primary);color:white;width:100%;margin-top:6px" disabled>Create PDF</button></div>
+                <div id="tab-pdf2img" style="display:none"><div id="pdf2imgDrop" class="drop" style="padding:16px;border:1px dashed var(--border);border-radius:10px;text-align:center;cursor:pointer"><div>📄 → 🖼️ Drop PDF</div><input id="pdf2imgInput" type="file" accept="application/pdf" hidden></div><div id="pdf2imgList" style="margin:8px 0;display:grid;grid-template-columns:1fr 1fr;gap:6px"></div><button id="pdf2imgDownloadAll" class="btn" style="background:var(--primary);color:white;width:100%;margin-top:6px" disabled>Download ZIP</button></div>
+                <div id="tab-merge" style="display:none"><div id="mergeDrop" class="drop" style="padding:16px;border:1px dashed var(--border);border-radius:10px;text-align:center;cursor:pointer"><div>📄+📄 Drop PDFs</div><input id="mergeInput" type="file" accept="application/pdf" multiple hidden></div><div id="mergeList" style="margin:8px 0"></div><button id="mergeBtn" class="btn" style="background:var(--primary);color:white;width:100%;margin-top:6px" disabled>Merge PDFs</button></div>
+                <div id="img2pdfStatus" style="font-size:0.7rem;color:var(--muted);margin-top:6px"></div><div id="pdf2imgStatus" style="font-size:0.7rem;color:var(--muted)"></div><div id="mergeStatus" style="font-size:0.7rem;color:var(--muted)"></div>
+              </div>
+
+              <button id="iDownload" class="btn" style="background:#22c55e;color:white;width:100%;padding:12px;border-radius:10px;font-weight:800;margin-top:16px">⬇️ Download PNG</button>
+              <button id="iNew" class="btn btn-ghost" style="width:100%;margin-top:8px">↺ Reset All Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTICLES -->
+      <section id="articles" class="articles-section">
+        <div class="card">
+          <h2 class="hero-title" style="font-size: 1.5rem; text-align: left; margin-bottom: 6px">Learn & stay private</h2>
+          <p style="color: var(--muted); font-size: 0.875rem; margin-bottom: 8px">Short guides on formats, privacy, and best practices.</p>
+          <div class="articles-grid">
+            <article class="article-card">
+              <span class="tag">Privacy</span>
+              <h3>Why private conversion matters</h3>
+              <p>Most online converters upload your files to a server. That risks leaks, logs, and third-party access. ConvertFlow runs FFmpeg and canvas processing only in your browser — your media never leaves the device.</p>
+              <a href="/articles/why-private-conversion.html">Read more →</a>
+            </article>
+            <article class="article-card">
+              <span class="tag">Video</span>
+              <h3>MP4 vs MOV vs GIF: which to choose</h3>
+              <p>MP4 is the universal web and phone format. MOV is common from Apple devices. GIF is for short, silent loops. Learn when each makes sense and what quality settings to use.</p>
+              <a href="/articles/mp4-vs-mov-vs-gif.html">Read more →</a>
+            </article>
+            <article class="article-card">
+              <span class="tag">Image</span>
+              <h3>Instagram, YouTube & TikTok sizes explained</h3>
+              <p>1080×1080 posts, 1080×1920 Stories/Reels/Shorts, 1280×720 thumbnails. Use the right preset so platforms don’t crop or stretch your image.</p>
+              <a href="/articles/social-image-sizes.html">Read more →</a>
+            </article>
+            <article class="article-card">
+              <span class="tag">Tips</span>
+              <h3>Faster conversions and smaller files</h3>
+              <p>Keep resolution reasonable, use WebP or AVIF for photos, and prefer MP4 with H.264 for video. Browser conversion works best under a few hundred MB; very large files may need patience or a desktop tool.</p>
+              <a href="/articles/faster-smaller-files.html">Read more →</a>
+            </article>
+            <article class="article-card">
+              <span class="tag">Video</span>
+              <h3>How to remove audio from a video</h3>
+              <p>Muting a video shouldn't mean re-encoding the whole file. Learn when a silent video actually helps — and how to strip audio instantly, without quality loss, entirely in your browser.</p>
+              <a href="/articles/how-to-remove-audio.html">Read more →</a>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
-    <aside>
-      <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4747106371991816" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
-      <div class="card" style="padding:20px;margin-top:16px">
-        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:8px">All video functions</h3>
-        <ul style="font-size:0.85rem;color:var(--muted);padding-left:18px;display:flex;flex-direction:column;gap:6px">
-          <li>Interactive preview modal (click thumbnail)</li>
-          <li>Rotate 90/180/270° — live preview</li>
-          <li>Flip H = mirror, Flip V</li>
-          <li>Remove audio / mute</li>
-          <li>Resolution: 2160p to 240p</li>
-          <li>Hardware acceleration (MP4→WebM)</li>
-          <li>Fast remux (instant when possible)</li>
-          <li>WAV native fast path (no engine)</li>
-        </ul>
+
+    <aside class="sidebar" style="display: flex; flex-direction: column; gap: 20px">
+      <div class="card" style="padding: 16px">
+        <!-- freeonlineconverters - Sidebar MPU -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4747106371991816"
+             data-ad-slot="8252393058"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      <div class="card" style="padding: 16px">
+        <!-- ConvertFlow - Sidebar 300x600 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4747106371991816"
+             data-ad-slot="2533162514"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
     </aside>
   </div>
 </div>
 
-<footer><div class="wrap"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:24px 0;border-top:1px solid var(--border);margin-top:32px;color:var(--muted);font-size:0.85rem"><div>© 2026 FreeOnlineConverters · Private by design</div><div style="display:flex;gap:14px"><a href="/privacy-policy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></div></div></div></footer>
-
-<!-- Consent Banner - GDPR + Quebec Law 25 compliant, loads GA/Ads only after Accept -->
-<div id="consentBanner" role="dialog" aria-live="polite" aria-label="Cookie consent" style="display:none;position:fixed;bottom:16px;left:16px;right:16px;max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:9999;gap:12px;align-items:center;flex-wrap:wrap">
-  <div style="flex:1;min-width:220px;font-size:0.9rem;line-height:1.4">
-    <strong style="display:block;margin-bottom:4px">Privacy first</strong>
-    We use cookies for analytics and ads only if you accept. Your video never leaves your device. <a href="/privacy-policy.html">Privacy policy</a>
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>© 2026 FreeOnlineConverters.cc.cc · Private by design</div>
+      <div class="footer-links">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="#articles">Articles</a>
+      </div>
+    </div>
   </div>
-  <div style="display:flex;gap:8px">
-    <button type="button" id="consentDeny" class="btn btn-ghost" style="padding:10px 16px">Deny</button>
-    <button type="button" id="consentAccept" class="btn btn-blue" style="padding:10px 18px;border-radius:10px;font-weight:600">Accept</button>
-  </div>
-</div>
-
-<script>
-// Consent handling - does NOT load GA/Ads until granted
-(function(){
-  const BANNER = document.getElementById('consentBanner');
-  const KEY = 'fcc_consent_choice';
-  const saved = localStorage.getItem(KEY) || localStorage.getItem('consent_choice');
-  function injectGA(){
-    if(document.querySelector('script[data-ga]')) return;
-    var s1 = document.createElement('script');
-    s1.async = true;
-    s1.src = 'https://www.googletagmanager.com/gtag/js?id=G-Q6QJX3F5R3';
-    s1.setAttribute('data-ga','1');
-    document.head.appendChild(s1);
-    var s2 = document.createElement('script');
-    s2.textContent = "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-Q6QJX3F5R3',{anonymize_ip:true});";
-    document.head.appendChild(s2);
-  }
-  function injectAds(){
-    if(document.querySelector('script[data-ads]')) return;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4747106371991816';
-    s.crossOrigin = 'anonymous';
-    s.setAttribute('data-ads','1');
-    document.head.appendChild(s);
-  }
-  function loadAll(){
-    injectGA(); injectAds();
-    try{ gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'}); }catch(e){}
-  }
-  if(saved==='granted'){ loadAll(); }
-  else if(saved!=='denied'){ setTimeout(()=>{ BANNER.style.display='flex'; }, 800); }
-  document.getElementById('consentAccept')?.addEventListener('click', ()=>{ localStorage.setItem(KEY,'granted'); localStorage.setItem('consent_choice','granted'); BANNER.style.display='none'; loadAll(); });
-  document.getElementById('consentDeny')?.addEventListener('click', ()=>{ localStorage.setItem(KEY,'denied'); localStorage.setItem('consent_choice','denied'); BANNER.style.display='none'; });
-})();
-</script>
+</footer>
 
 <script type="module">
-// === FULL VIDEO LOGIC - PRESERVED FROM ORIGINAL ===
-
 import { FFmpeg } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
 import { fetchFile, toBlobURL } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js';
 
@@ -858,19 +989,28 @@ function withTimeout(promise, ms, label) {
 }
 
 async function loadCoreFrom() {
-  // FIXED FOR CLOUDFLARE PAGES: No more /ffmpeg/ self-hosted files needed.
-  // We blobify the classWorker from CDN so it becomes same-origin blob: URL
-  // This avoids the "worker.js was served as HTML" SPA fallback error.
-  const FFMPEG_CDN = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm';
-  const classWorkerURL = await withTimeout(
-    toBlobURL(`${FFMPEG_CDN}/worker.js`, 'text/javascript'),
-    15000,
-    'Downloading FFmpeg worker'
-  );
+  // FIXED FOR CLOUDFLARE PAGES - Works with original index.html structure
+  // Try self-hosted /ffmpeg/ first (your original method), fallback to blob CDN method if missing
+  let classWorkerURL;
+  try {
+    // Try to fetch self-hosted worker.js
+    const testRes = await fetch('/ffmpeg/worker.js', { method: 'HEAD', cache: 'no-store' });
+    const ct = testRes.headers.get('content-type') || '';
+    if (testRes.ok && !ct.includes('text/html')) {
+      classWorkerURL = new URL('/ffmpeg/worker.js', location.origin).href;
+    } else {
+      throw new Error('self-hosted not available');
+    }
+  } catch {
+    // Fallback: blobify from CDN - no /ffmpeg/ folder needed, fixes Cloudflare Pages SPA issue
+    classWorkerURL = await withTimeout(
+      toBlobURL('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js', 'text/javascript'),
+      15000,
+      'Downloading FFmpeg worker'
+    );
+  }
 
-  // Use single-threaded only on Pages (multi-thread needs COOP/COEP headers which break AdSense)
-  // If you want MT, add _headers file with COOP/COEP and set useMultiThread = crossOriginIsolated
-  const useMultiThread = false;
+  const useMultiThread = false; // Set to window.crossOriginIsolated for MT, but needs COOP/COEP headers which break AdSense
   const corePkg = '@ffmpeg/core';
   const CORE_CDN_BASE = `https://cdn.jsdelivr.net/npm/${corePkg}@0.12.6/dist/esm`;
 
@@ -880,7 +1020,7 @@ async function loadCoreFrom() {
       toBlobURL(`${CORE_CDN_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
     ]),
     45000,
-    'Downloading FFmpeg core from CDN'
+    'Downloading FFmpeg core'
   );
 
   await withTimeout(
@@ -1396,7 +1536,339 @@ document.getElementById('vFlipV')?.addEventListener('change', updateVPreviewTran
 
 setupDrop(vDrop, vInput, addVFiles);
 
+// ——— IMAGE ———
+const iDrop = document.getElementById('iDrop');
+const iInput = document.getElementById('iInput');
+const iWorkspace = document.getElementById('iWorkspace');
+const iCanvas = document.getElementById('imgCanvas');
+const iCtx = iCanvas.getContext('2d');
+const cropOverlay = document.getElementById('cropOverlay');
+const cropHandle = document.getElementById('cropHandle');
+let imgObj=null, origW=0, origH=0, rotation=0, flipH=false, flipV=false, lastW=0, lastH=0, currentImageUrl=null, drawPending=false;
+let cropRect=null, appliedCrop=null, cropDragging=null, cropStart=null, history=[], future=[];
+const keepChk=document.getElementById('keepAspect'), fitBox=document.getElementById('fitBox'), fitSel=document.getElementById('iFit'), bgInput=document.getElementById('iBg'), bgHex=document.getElementById('bgHex');
+function state(){return {w:+document.getElementById('iW').value||origW,h:+document.getElementById('iH').value||origH,keep:keepChk.checked,fit:fitSel.value,bg:bgInput.value,crop:document.getElementById('iCrop').value,bright:+document.getElementById('iBright').value,quality:+document.getElementById('iQuality').value,format:document.getElementById('iFormat').value,rotation,flipH,flipV,cropRect:cropRect&&{...cropRect},appliedCrop:appliedCrop&&{...appliedCrop}}}
+function restore(st){if(!st)return; document.getElementById('iW').value=st.w;document.getElementById('iH').value=st.h;keepChk.checked=st.keep;fitSel.value=st.fit;bgInput.value=st.bg;bgHex.textContent=st.bg;document.getElementById('iCrop').value=st.crop;document.getElementById('iBright').value=st.bright;document.getElementById('iQuality').value=st.quality;document.getElementById('iQVal').textContent=st.quality+'%';document.getElementById('iFormat').value=st.format;rotation=st.rotation;flipH=st.flipH;flipV=st.flipV;cropRect=st.cropRect&&{...st.cropRect};appliedCrop=st.appliedCrop&&{...st.appliedCrop};lastW=lastH=0;updateFitVisibility(false);drawImage();}
+function commit(){if(!imgObj)return;history.push(state());if(history.length>40)history.shift();future=[];updateHistory();}
+function updateHistory(){document.getElementById('iUndo').disabled=history.length===0;document.getElementById('iRedo').disabled=future.length===0;}
+function change(fn){if(!imgObj)return;history.push(state());if(history.length>40)history.shift();future=[];fn();updateHistory();drawImage();}
+function updateFitVisibility(redraw=true){fitBox.classList.toggle('show',!keepChk.checked);if(redraw)drawImage();}
+keepChk.onchange=()=>change(()=>updateFitVisibility(false)); bgInput.oninput=()=>{bgHex.textContent=bgInput.value;scheduleDraw()}; fitSel.onchange=()=>change(()=>{});
+function addIFiles(list){if(!list?.[0])return;const file=list[0];if(!file.type.startsWith('image/'))return;if(currentImageUrl)URL.revokeObjectURL(currentImageUrl);const url=URL.createObjectURL(file);currentImageUrl=url;const img=new Image();img.onload=()=>{origW=img.width;origH=img.height;imgObj=img;rotation=0;flipH=false;flipV=false;cropRect=null;appliedCrop=null;history=[];future=[];updateHistory();iDrop.classList.add('hidden');iWorkspace.style.display='block';document.getElementById('iW').value=origW;document.getElementById('iH').value=origH;document.getElementById('iCrop').value='none';document.getElementById('iBright').value=100;keepChk.checked=true;lastW=lastH=0;updateFitVisibility(false);drawImage()};img.onerror=()=>alert('Could not load this image.');img.src=url;}
+function scheduleDraw(){if(drawPending)return;drawPending=true;requestAnimationFrame(()=>{drawPending=false;drawImage()})}
+function setPresetCrop(val){if(val==='none'){cropRect=null;return}let ratio=val==='custom'&&cropRect?cropRect.w/cropRect.h:null;if(!ratio&&val!=='custom'){const [a,b]=val.split(':').map(Number);ratio=a/b}if(!ratio){cropRect={x:origW*.1,y:origH*.1,w:origW*.8,h:origH*.8};return}let w=origW,h=w/ratio;if(h>origH){h=origH;w=h*ratio}cropRect={x:(origW-w)/2,y:(origH-h)/2,w,h}}
+function drawImage(){if(!imgObj)return;let targetW=parseInt(document.getElementById('iW').value,10)||origW,targetH=parseInt(document.getElementById('iH').value,10)||origH;targetW=Math.max(1,targetW);targetH=Math.max(1,targetH);const baseSrc=appliedCrop||{x:0,y:0,w:origW,h:origH};if(keepChk.checked){if(targetW!==lastW){targetH=Math.round(targetW*baseSrc.h/baseSrc.w)||1;document.getElementById('iH').value=targetH}else if(targetH!==lastH){targetW=Math.round(targetH*baseSrc.w/baseSrc.h)||1;document.getElementById('iW').value=targetW}}lastW=targetW;lastH=targetH;
+const cropVal=document.getElementById('iCrop').value;if(cropVal!=='none'&&!cropRect&&!appliedCrop)setPresetCrop(cropVal);if(cropVal==='none')cropRect=null;// A crop selection is only an overlay. The image is not actually cropped until APPLY CROP is clicked.
+let src=appliedCrop||{x:0,y:0,w:origW,h:origH};iCanvas.width=targetW;iCanvas.height=targetH;const bright=document.getElementById('iBright').value;iCtx.save();iCtx.clearRect(0,0,targetW,targetH);if(!keepChk.checked&&fitSel.value==='contain'){iCtx.fillStyle=bgInput.value;iCtx.fillRect(0,0,targetW,targetH)}iCtx.filter=`brightness(${bright}%)`;iCtx.translate(targetW/2,targetH/2);if(flipH)iCtx.scale(-1,1);if(flipV)iCtx.scale(1,-1);iCtx.rotate(rotation*Math.PI/180);if(keepChk.checked||fitSel.value==='cover'){iCtx.drawImage(imgObj,src.x,src.y,src.w,src.h,-targetW/2,-targetH/2,targetW,targetH)}else if(fitSel.value==='contain'){const sc=Math.min(targetW/src.w,targetH/src.h),dw=src.w*sc,dh=src.h*sc;iCtx.drawImage(imgObj,src.x,src.y,src.w,src.h,-dw/2,-dh/2,dw,dh)}else{iCtx.drawImage(imgObj,src.x,src.y,src.w,src.h,-targetW/2,-targetH/2,targetW,targetH)}iCtx.restore();syncCropOverlay();const applyBtn=document.getElementById('iApplyCrop');applyBtn.style.display=cropRect?'inline-flex':'none';applyBtn.textContent=cropRect?'✓ APPLY CROP & COMMIT':'✓ APPLY CROP & COMMIT';document.getElementById('iInfo').textContent=`Output ${targetW}×${targetH}${cropRect?' · selection '+Math.round(cropRect.w)+'×'+Math.round(cropRect.h)+' — click APPLY CROP to commit':''} · ${document.getElementById('iFormat').value.split('/')[1].toUpperCase()}`;}
+function syncCropOverlay(){if(!cropRect){cropOverlay.classList.remove('show');return}const wrap=iCanvas.getBoundingClientRect(),parent=iCanvas.parentElement.getBoundingClientRect();cropOverlay.classList.add('show');cropOverlay.style.left=(wrap.left-parent.left+cropRect.x/origW*wrap.width)+'px';cropOverlay.style.top=(wrap.top-parent.top+cropRect.y/origH*wrap.height)+'px';cropOverlay.style.width=(cropRect.w/origW*wrap.width)+'px';cropOverlay.style.height=(cropRect.h/origH*wrap.height)+'px';}
+function cropPointer(e){const r=iCanvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*origW,y:(e.clientY-r.top)/r.height*origH}}
+function cropStartAction(type,e){if(!cropRect)return;e.preventDefault();history.push(state());future=[];cropDragging=type;cropStart={p:cropPointer(e),rect:{...cropRect}};cropOverlay.setPointerCapture?.(e.pointerId)}
+cropOverlay.addEventListener('pointerdown',e=>{if(e.target===cropHandle)return;cropStartAction('move',e)});cropHandle.addEventListener('pointerdown',e=>cropStartAction('resize',e));window.addEventListener('pointermove',e=>{if(!cropDragging||!cropStart)return;const p=cropPointer(e),dx=p.x-cropStart.p.x,dy=p.y-cropStart.p.y,r={...cropStart.rect};if(cropDragging==='move'){r.x=Math.max(0,Math.min(origW-r.w,r.x+dx));r.y=Math.max(0,Math.min(origH-r.h,r.y+dy))}else{r.w=Math.max(20,Math.min(origW-r.x,r.w+dx));r.h=Math.max(20,Math.min(origH-r.y,r.h+dy));const val=document.getElementById('iCrop').value;if(val!=='custom'&&val!=='none'){const [a,b]=val.split(':').map(Number);r.h=r.w*b/a;if(r.y+r.h>origH){r.h=origH-r.y;r.w=r.h*a/b}}}cropRect=r;drawImage()});window.addEventListener('pointerup',()=>{if(cropDragging){cropDragging=null;cropStart=null;updateHistory()}});
+document.getElementById('iW').addEventListener('change',()=>change(()=>{}));document.getElementById('iH').addEventListener('change',()=>change(()=>{}));document.getElementById('iW').addEventListener('input',scheduleDraw);document.getElementById('iH').addEventListener('input',scheduleDraw);document.getElementById('iCrop').onchange=e=>change(()=>setPresetCrop(e.target.value));document.getElementById('iBright').onchange=()=>commit();document.getElementById('iBright').oninput=scheduleDraw;document.getElementById('iFormat').onchange=()=>change(()=>{});document.getElementById('iQuality').oninput=e=>{document.getElementById('iQVal').textContent=e.target.value+'%';scheduleDraw()};document.getElementById('iQuality').onchange=()=>commit();
+document.getElementById('iRotate').onclick=()=>change(()=>rotation=(rotation+90)%360);document.getElementById('iFlipH').onclick=()=>change(()=>flipH=!flipH);document.getElementById('iFlipV').onclick=()=>change(()=>flipV=!flipV);document.getElementById('iApplyCrop').onclick=()=>{
+  if(!cropRect || !imgObj){return;}
+  const {x,y,w,h} = cropRect;
+  const tmp = document.createElement('canvas');
+  tmp.width = Math.round(w);
+  tmp.height = Math.round(h);
+  const tCtx = tmp.getContext('2d');
+  tCtx.drawImage(imgObj, x, y, w, h, 0, 0, w, h);
+  const newImg = new Image();
+  newImg.onload = ()=>{
+    history.push(state());
+    imgObj = newImg;
+    origW = Math.round(w);
+    origH = Math.round(h);
+    cropRect = null;
+    document.getElementById('iCrop').value='none';
+    document.getElementById('iW').value = origW;
+    document.getElementById('iH').value = origH;
+    lastW = origW; lastH = origH;
+    updateHistory();
+    drawImage();
+    document.getElementById('iInfo').textContent=`Crop applied: ${origW}×${origH} · Undo available`;
+  };
+  newImg.src = tmp.toDataURL();
+};
 
+document.getElementById('iUndo').onclick=()=>{if(!history.length)return;future.push(state());restore(history.pop());updateHistory()};document.getElementById('iRedo').onclick=()=>{if(!future.length)return;history.push(state());restore(future.pop());updateHistory()};
+document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>change(()=>{document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));p.classList.add('active');document.getElementById('iW').value=p.dataset.w;document.getElementById('iH').value=p.dataset.h;lastW=lastH=0}));
+document.getElementById('iDownload').onclick=()=>{const format=document.getElementById('iFormat').value,q=+document.getElementById('iQuality').value/100,ext=format.split('/')[1].replace('jpeg','jpg');iCanvas.toBlob(blob=>{if(!blob)return alert('Could not create the image file.');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`converted-${Date.now()}.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},format,(format==='image/jpeg'||format==='image/webp')?q:undefined)};
+document.getElementById('iReset').onclick=()=>change(()=>{document.getElementById('iW').value=origW;document.getElementById('iH').value=origH;rotation=0;flipH=false;flipV=false;cropRect=null;appliedCrop=null;document.getElementById('iCrop').value='none';document.getElementById('iBright').value=100;keepChk.checked=true;lastW=lastH=0;document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));updateFitVisibility(false)});
+document.getElementById('iNew').onclick=()=>{iWorkspace.style.display='none';iDrop.classList.remove('hidden');imgObj=null;cropRect=null;appliedCrop=null;history=[];future=[];updateHistory();cropOverlay.classList.remove('show');if(currentImageUrl){URL.revokeObjectURL(currentImageUrl);currentImageUrl=null}iInput.value=''};
+setupDrop(iDrop,iInput,addIFiles);
+
+// Override: Image tab opens resizeflowcc.html in new window like articles
+document.querySelectorAll('.tabBtn[data-tab="image"]').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    window.open('/resizeflowcc.html', '_blank');
+  });
+});
+// Also handle any legacy data-tab image
+document.addEventListener('click', (e)=>{
+  const t = e.target.closest('[data-tab="image"]');
+  if(t){
+    e.preventDefault();
+    window.open('/resizeflowcc.html', '_blank');
+  }
+});
+
+</script>
+
+<!-- Consent Banner - Simple (For EEA, replace with Google Certified CMP like Quantcast/Didomi) -->
+<div id="consentBanner" style="display:none;position:fixed;bottom:16px;left:16px;right:16px;max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:9999;gap:12px;align-items:center;flex-wrap:wrap">
+  <div style="flex:1;min-width:220px;font-size:0.9rem">We use cookies for analytics and ads if you accept. <a href="/privacy-policy.html">Privacy policy</a></div>
+  <div style="display:flex;gap:8px">
+    <button id="consentReject" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;color:var(--text)">Reject</button>
+    <button id="consentAccept" style="padding:8px 14px;border-radius:8px;border:0;background:var(--primary);color:white;cursor:pointer">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(localStorage.getItem('consent_choice')) return;
+  var banner = document.getElementById('consentBanner');
+  banner.style.display='flex';
+  function setConsent(granted){
+    var v = granted ? 'granted' : 'denied';
+    gtag('consent','update',{ad_storage:v, ad_user_data:v, ad_personalization:v, analytics_storage:v});
+    localStorage.setItem('consent_choice', granted ? 'accepted' : 'rejected');
+    banner.style.display='none';
+    if(granted){
+      try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
+    }
+  }
+  document.getElementById('consentAccept').onclick = function(){ setConsent(true); };
+  document.getElementById('consentReject').onclick = function(){ setConsent(false); };
+})();
+</script>
+
+<script>
+// Settings sub-tabs switching
+document.querySelectorAll('.settingsTab').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.settingsTab').forEach(b=>{
+      b.classList.remove('active'); b.style.borderBottom='none'; b.style.color='var(--muted)'; b.style.fontWeight='400';
+    });
+    btn.classList.add('active'); btn.style.borderBottom='2px solid var(--primary)'; btn.style.color='var(--primary)'; btn.style.fontWeight='700';
+    const tab=btn.dataset.settingsTab;
+    document.getElementById('settings-resize').style.display = tab==='resize' ? '' : 'none';
+    document.getElementById('settings-crop').style.display = tab==='crop' ? '' : 'none';
+    document.getElementById('settings-transform').style.display = tab==='transform' ? '' : 'none';
+    document.getElementById('settings-compress').style.display = tab==='compress' ? '' : 'none';
+    document.getElementById('settings-enhance').style.display = tab==='enhance' ? '' : 'none';
+    document.getElementById('settings-pdf').style.display = tab==='pdf' ? '' : 'none';
+  };
+});
+// PDF sub-tabs
+document.querySelectorAll('.pdf-tab').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.pdf-tab').forEach(x=>{x.classList.remove('active'); x.style.background='var(--bg)'});
+    b.classList.add('active'); b.style.background='var(--card)';
+    const t=b.dataset.pdfTab;
+    document.getElementById('tab-img2pdf').style.display = t==='img2pdf' ? '' : 'none';
+    document.getElementById('tab-pdf2img').style.display = t==='pdf2img' ? '' : 'none';
+    document.getElementById('tab-merge').style.display = t==='merge' ? '' : 'none';
+  };
+});
+// Replace image button
+document.getElementById('iReplace')?.addEventListener('click',()=>document.getElementById('iInput')?.click() || document.getElementById('iDrop')?.click());
+</script>
+
+
+<script>
+// --- FIXES for upload window, preview, Show Original/Edited, Image Fit, presets ---
+(function(){
+  const iDrop = document.getElementById('iDrop');
+  const iInput = document.getElementById('iInput');
+  const iWorkspace = document.getElementById('iWorkspace');
+  const iCanvas = document.getElementById('imgCanvas');
+  const iReplace = document.getElementById('iReplace');
+  const iShowOriginal = document.getElementById('iShowOriginal');
+  const iShowEdited = document.getElementById('iShowEdited');
+  const loadedInfo = document.getElementById('loadedInfo');
+  const fileNameEl = document.getElementById('fileName');
+  const fileExtEl = document.getElementById('fileExt');
+  const fileSizeEl = document.getElementById('fileSize');
+  const sizeFormatEl = document.getElementById('sizeFormatInfo');
+  
+  if(!iDrop || !iWorkspace || !iCanvas) return;
+  
+  // Ensure initial state: drop visible, workspace hidden (for image tab)
+  // For main site, image tab is hidden, so this is fine. For resizeflowcc, show drop
+  if(iDrop && iWorkspace){
+    // Only set if we're on image tab page or image tab is the active one
+    const isResizePage = window.location.pathname.includes('resizeflowcc');
+    if(isResizePage){
+      iDrop.style.display = 'block';
+      iWorkspace.style.display = 'none';
+    }
+  }
+  
+  // File info update helper
+  function updateFileInfo(file){
+    if(fileNameEl) fileNameEl.textContent = file.name;
+    if(fileExtEl) fileExtEl.textContent = file.name.split('.').pop().toUpperCase();
+    if(fileSizeEl) fileSizeEl.textContent = (file.size/1024/1024).toFixed(2) + ' MB';
+    if(loadedInfo) loadedInfo.textContent = 'Loaded: ' + (fileNameEl ? fileNameEl.textContent : file.name);
+  }
+  
+  // Show Original / Show Edited logic
+  let showingOriginal = false;
+  let originalImageData = null;
+  
+  if(iShowOriginal && iShowEdited){
+    iShowOriginal.onclick = function(){
+      if(!window.imgObj && !window.origImage) {
+        // Try to get imgObj from global scope
+        const img = window.imgObj || window._imgObj;
+        if(!img) return;
+      }
+      showingOriginal = true;
+      iShowOriginal.style.background = 'var(--primary)';
+      iShowOriginal.style.color = 'white';
+      iShowEdited.style.background = '';
+      iShowEdited.style.color = '';
+      // Draw original without edits
+      const canvas = iCanvas;
+      const ctx = canvas.getContext('2d');
+      const img = window.imgObj;
+      if(img){
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img, 0,0);
+        if(sizeFormatEl) sizeFormatEl.textContent = canvas.width + ' × ' + canvas.height + ' px | ORIGINAL';
+      }
+    };
+    iShowEdited.onclick = function(){
+      showingOriginal = false;
+      iShowEdited.style.background = 'var(--primary)';
+      iShowEdited.style.color = 'white';
+      iShowOriginal.style.background = '';
+      iShowOriginal.style.color = '';
+      // Trigger redraw with edits
+      if(window.drawImage) window.drawImage();
+      else if(window.scheduleDraw) window.scheduleDraw();
+    };
+  }
+  
+  // Replace Image
+  if(iReplace && iInput){
+    iReplace.onclick = function(){ iInput.click(); };
+  }
+  
+  // Image Fit radio handling - create if not exists
+  // Look for existing Image Fit section or create one
+  let imageFitContainer = document.querySelector('#settings-resize');
+  if(imageFitContainer && !document.querySelector('input[name="imageFit"]')){
+    // Create Image Fit radio group like screenshot 4
+    const fitHTML = `
+      <div style="margin:12px 0;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+        <div style="font-size:0.85rem;font-weight:700;margin-bottom:8px">Image Fit</div>
+        <label style="display:flex;gap:8px;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--bg)">
+          <input type="radio" name="imageFit" value="background" checked>
+          <div style="flex:1"><div style="font-weight:600;font-size:0.8rem">Background Fill</div><div style="font-size:0.7rem;color:var(--muted)">Keep the entire image visible and fill empty space.</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px"><input type="color" id="bgColorPick" value="#000000" style="width:40px;height:24px"><span style="font-size:0.7rem;color:var(--muted)">#000000</span><button style="padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);font-size:0.7rem">Pick Color</button></div></div>
+        </label>
+        <label style="display:flex;gap:8px;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--bg)">
+          <input type="radio" name="imageFit" value="transparent">
+          <div style="flex:1"><div style="font-weight:600;font-size:0.8rem">Transparent</div><div style="font-size:0.7rem;color:var(--muted)">Keep image visible with transparent background (PNG, WebP, AVIF, SVG).</div></div>
+        </label>
+        <label style="display:flex;gap:8px;padding:10px;border:1px solid var(--primary);border-radius:10px;cursor:pointer;background:var(--bg);outline:2px solid rgba(37,99,235,0.2)">
+          <input type="radio" name="imageFit" value="crop" checked>
+          <div style="flex:1"><div style="font-weight:600;font-size:0.8rem">Crop</div><div style="font-size:0.7rem;color:var(--muted)">Fill area while preserving proportions. Excess image will be cropped.</div></div>
+        </label>
+      </div>
+    `;
+    // Insert after Resize Dimensions
+    const resizeDims = imageFitContainer.querySelector('div');
+    // Find after the second input grid
+    const grids = imageFitContainer.querySelectorAll('div[style*="grid-template-columns:1fr 1fr"]');
+    if(grids[0]){
+      grids[0].insertAdjacentHTML('afterend', fitHTML);
+    }
+  }
+  
+  // Preset handling - should uncheck Keep Aspect Ratio and set fit to Crop, like screenshot 4
+  document.querySelectorAll('.preset').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      // Uncheck Keep Aspect Ratio when preset chosen (like in screenshot 4)
+      const keepChk = document.getElementById('keepAspect');
+      if(keepChk) keepChk.checked = false;
+      
+      // Set Image Fit to Crop
+      const cropRadio = document.querySelector('input[name="imageFit"][value="crop"]');
+      if(cropRadio) cropRadio.checked = true;
+      
+      // Update fit select if exists
+      const fitSel = document.getElementById('iFit');
+      if(fitSel) fitSel.value = 'cover';
+      
+      // Update dimensions
+      const w = this.dataset.w;
+      const h = this.dataset.h;
+      const iW = document.getElementById('iW');
+      const iH = document.getElementById('iH');
+      if(iW) iW.value = w;
+      if(iH) iH.value = h;
+      
+      // Trigger draw
+      if(window.change) window.change(()=>{});
+      else if(window.drawImage) window.drawImage();
+      else if(window.scheduleDraw) window.scheduleDraw();
+      
+      // Visual feedback - highlight selected preset
+      document.querySelectorAll('.preset').forEach(p=>{p.style.borderColor='var(--border)'; p.style.outline='none';});
+      this.style.borderColor='var(--primary)';
+      this.style.outline='2px solid rgba(37,99,235,0.3)';
+      
+      // Update output info
+      const sizeFormatEl = document.getElementById('sizeFormatInfo');
+      if(sizeFormatEl) sizeFormatEl.textContent = w + ' × ' + h + ' px | PNG - Output ' + w + '×' + h + ' · PNG';
+    });
+  });
+  
+  // Fix preview not showing - ensure drawImage is called after image load and canvas is visible
+  const originalAddIFiles = window.addIFiles;
+  if(window.addIFiles){
+    window.addIFiles = function(list){
+      if(!list || !list[0]) return;
+      const file = list[0];
+      updateFileInfo(file);
+      // Call original
+      originalAddIFiles(list);
+      // Ensure workspace visible and drop hidden after a short delay
+      setTimeout(()=>{
+        if(iDrop) iDrop.style.display = 'none';
+        if(iWorkspace) iWorkspace.style.display = 'block';
+        // Force redraw
+        setTimeout(()=>{
+          if(window.drawImage) window.drawImage();
+          // Ensure canvas has content
+          const canvas = document.getElementById('imgCanvas');
+          if(canvas && canvas.width===0){
+            canvas.width = 400;
+            canvas.height = 300;
+          }
+        }, 100);
+      }, 50);
+    };
+  }
+  
+  // Ensure iDrop click opens file picker
+  if(iDrop && iInput){
+    iDrop.addEventListener('click', function(e){
+      if(e.target.tagName==='BUTTON' || e.target.tagName==='INPUT') return;
+      // Don't trigger if clicking inside workspace
+      if(iWorkspace.style.display==='block' && iWorkspace.contains(e.target)) return;
+      iInput.click();
+    });
+  }
+  
+  // Fix Show Original - store original image
+  // Override image load to store original
+  const origOnload = window.Image ? window.Image.prototype.onload : null;
+})();
 </script>
 
 </body>
