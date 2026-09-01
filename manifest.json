@@ -1,0 +1,9 @@
+{
+  "name": "FreeOnlineConverters - Private Tools",
+  "short_name": "FOC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#2563eb",
+  "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+}

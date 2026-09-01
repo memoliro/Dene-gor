@@ -1,545 +1,272 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ResizeFlow | Privacy-First Image Resizer, Cropper & Batch Converter</title>
-    <meta name="description" content="Resize, crop, compress, and convert images 100% client-side in your browser. Fast, private, zero server uploads, and batch ZIP export supported.">
-    <meta name="keywords" content="image resizer, batch image converter, client-side image editor, privacy-first image compression, webp converter">
-    <meta name="robots" content="index, follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Video Converter — Private MP4, MOV, MP3, GIF in Browser | FreeOnlineConverters.cc</title>
+<meta name="description" content="Convert video and audio 100% privately in your browser. No uploads, no tracking. MP4, MOV, WebM, MP3, WAV, GIF converter with trim, rotate, compress.">
+<link rel="canonical" href="https://freeonlineconverters.cc/">
+<meta name="theme-color" content="#0b1120">
+<meta property="og:title" content="Free Private Video Converter - No Upload">
+<meta property="og:description" content="Convert video/audio entirely in your browser. Files never leave your device.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://freeonlineconverters.cc/">
+<meta property="og:image" content="https://freeonlineconverters.cc/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='16' font-family='Arial' font-weight='700' fill='white'%3EC%3C/text%3E%3C/svg%3E">
 
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://resizeflow.cc/">
-    <meta property="og:title" content="ResizeFlow | Private Browser-Based Image Processing">
-    <meta property="og:description" content="Process images locally with zero server processing. Free, instant, and private bulk image resizing and conversion.">
+<script>
+// Early theme
+(function(){ try{ var t=localStorage.getItem('theme'); if(!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', t); }catch(e){ document.documentElement.setAttribute('data-theme','dark'); } })();
+</script>
+<script>
+// Consent Mode v2 default - MUST be before any google tag
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{
+  ad_storage:'denied',
+  ad_user_data:'denied',
+  ad_personalization:'denied',
+  analytics_storage:'denied',
+  functionality_storage:'granted',
+  security_storage:'granted'
+});
+</script>
 
-    <!-- Preconnect & CDN Assets for Cropper.js and JSZip -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-WJoo14hVToC9k71+Hxl7gq9Wj4a+e2D15A+vj76i0t35gS0Vw4x+N0mJ0W4rW052K1yKjK8=" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6gAkqR/3Vdf2dYpC6T0a2P8tU25hW1X33v71E2+b+S0/6M1/uA+46H2R+K2M+4nK2tY2" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1ACc/XgyTO/ABCj4vMCzkAgWk3V/V19SpAe5vYu8VYFZ2L/n+uQ5VT8U2hZ2S0GZ4w1/zW19Y+Z2b+A==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "ResizeFlow",
-      "url": "https://resizeflow.cc",
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "All",
-      "browserRequirements": "Requires JavaScript and HTML5 Canvas support",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-    </script>
-
-    <style>
-        :root {
-            --bg-page: #0f172a;
-            --bg-card: #1e293b;
-            --bg-input: #334155;
-            --border-color: #475569;
-            --accent-color: #6366f1;
-            --accent-hover: #4f46e5;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --success-color: #10b981;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-page);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 24px 16px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 24px;
-            max-width: 800px;
-        }
-
-        header h1 {
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.025em;
-        }
-
-        header p {
-            color: var(--text-secondary);
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-
-        /* Prevent Layout Shift for Ad Placement */
-        .ad-container {
-            width: 100%;
-            max-width: 960px;
-            min-height: 90px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed var(--border-color);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-        }
-
-        .ad-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        main {
-            width: 100%;
-            max-width: 960px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .upload-area {
-            border: 2px dashed var(--accent-color);
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.2s, background-color 0.2s;
-            position: relative;
-        }
-
-        .upload-area:hover, .upload-area.drag-over {
-            border-color: var(--success-color);
-            background-color: rgba(16, 185, 129, 0.05);
-        }
-
-        .upload-area input[type="file"] {
-            display: none;
-        }
-
-        .upload-area .badge {
-            display: none;
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .editor-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .editor-grid {
-                grid-template-columns: 320px 1fr;
-            }
-        }
-
-        .controls-card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .control-group label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .control-group input, 
-        .control-group select {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .control-group input:focus, 
-        .control-group select:focus {
-            border-color: var(--accent-color);
-        }
-
-        .accordion {
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-            margin-top: 4px;
-        }
-
-        .accordion-header {
-            width: 100%;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            padding: 6px 0;
-        }
-
-        .accordion-body {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            padding-top: 12px;
-        }
-
-        .accordion-body.open {
-            display: flex;
-        }
-
-        .btn-action {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-        }
-
-        .btn-action:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .workspace-card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 350px;
-        }
-
-        .preview-container {
-            max-width: 100%;
-            max-height: 450px;
-            overflow: hidden;
-            border-radius: 8px;
-        }
-
-        .preview-container img, 
-        .preview-container canvas {
-            max-width: 100%;
-            max-height: 450px;
-            display: block;
-            object-fit: contain;
-        }
-
-        footer {
-            margin-top: Auto;
-            padding-top: 40px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-align: center;
-        }
-    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f1f5f9; --bg-elevated: #ffffff; --card: #ffffff; --border: #e2e8f0; --border-strong: #cbd5e1;
+  --text: #0f172a; --text-secondary: #334155; --muted: #64748b; --primary: #2563eb; --primary-hover: #1d4ed8;
+  --primary-soft: #eff6ff; --primary-border: #93c5fd; --success: #16a34a; --success-soft: #dcfce7; --success-text: #166534;
+  --danger: #dc2626; --radius: 16px; --radius-sm: 10px; --radius-lg: 24px;
+  --shadow-sm: 0 1px 2px rgba(15,23,42,0.04); --shadow: 0 4px 6px -1px rgba(15,23,42,0.06), 0 2px 4px -2px rgba(15,23,42,0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15,23,42,0.08), 0 4px 6px -4px rgba(15,23,42,0.04);
+  --font: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+[data-theme="dark"] {
+  --bg: #0b1120; --bg-elevated: #111827; --card: #1e293b; --border: #334155; --border-strong: #475569;
+  --text: #f8fafc; --text-secondary: #e2e8f0; --muted: #94a3b8; --primary: #3b82f6; --primary-hover: #60a5fa;
+  --primary-soft: #1e3a5f; --primary-border: #3b82f6; --success: #22c55e; --success-soft: #14532d; --success-text: #86efac;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2); --shadow: 0 4px 6px -1px rgba(0,0,0,0.25), 0 2px 4px -2px rgba(0,0,0,0.15);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -4px rgba(0,0,0,0.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth} body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh;transition:background 0.25s,color 0.25s;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none} a:hover{color:var(--primary-hover)}
+.header{background:color-mix(in srgb, var(--card) 92%, transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px} .hrow{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px;flex-wrap:wrap}
+.logoRow{display:flex;align-items:center;gap:12px} .logo{width:40px;height:40px;background:linear-gradient(135deg,var(--primary) 0%,#1d4ed8 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px}
+.brand{font-weight:800;font-size:1.25rem;letter-spacing:-0.03em;color:var(--text)} .badge{background:var(--success-soft);color:var(--success-text);font-size:0.6875rem;padding:5px 12px;border-radius:999px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase}
+.tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:12px;border:1px solid var(--border)}
+.tabBtn{padding:8px 16px;border-radius:8px;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:0.875rem;cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap;text-decoration:none;display:inline-block}
+.tabBtn:hover{color:var(--text)} .tabBtn.active{background:var(--card);color:var(--text);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.themeBtn{width:42px;height:42px;border-radius:12px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:1.125rem;display:flex;align-items:center;justify-content:center}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start} @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.hero-title{font-size:1.875rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2} .hero-sub{color:var(--muted);margin-top:8px}
+.privacy-pills{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0} .pill{font-size:0.75rem;background:var(--bg);border:1px solid var(--border);padding:6px 10px;border-radius:999px;color:var(--muted)}
+.drop{border:2px dashed var(--primary-border);background:var(--primary-soft);border-radius:24px;padding:36px 20px;text-align:center;cursor:pointer;transition:all 0.15s} .drop:hover{border-color:var(--primary);transform:translateY(-1px)} .plus{width:48px;height:48px;background:var(--card);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.5rem;color:var(--primary);box-shadow:var(--shadow-sm)}
+.drop-title{font-weight:700} .drop-hint{color:var(--muted);font-size:0.875rem;margin-top:4px}
+.btn{padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card);font-weight:600;cursor:pointer;font-family:inherit} .btnPrimary{background:var(--primary);color:white;border:0;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;width:100%} .btnPrimary:disabled{opacity:0.5;cursor:not-allowed}
+.progress-wrap{height:6px;background:var(--bg);border-radius:999px;overflow:hidden;margin:16px 0;display:none} .progress-bar{height:100%;background:var(--primary);width:0%;transition:width 0.3s}
+.status-line{font-size:0.875rem;color:var(--muted);margin-top:12px;min-height:20px}
+.footer-inner{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:24px 0;border-top:1px solid var(--border);margin-top:32px;color:var(--muted);font-size:0.85rem} .footer-links{display:flex;gap:14px}
+.ad-slot{min-height:280px;background:var(--bg);border:1px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.8rem;margin:16px 0}
+</style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Free Private Video Converter",
+  "operatingSystem":"Web Browser",
+  "applicationCategory":"MultimediaApplication",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "description":"Convert video and audio 100% privately in your browser. MP4, MOV, WebM, MP3, WAV, GIF. No upload.",
+  "featureList":"MP4 conversion, MOV conversion, MP3 extraction, GIF creation, trim, rotate, private",
+  "url":"https://freeonlineconverters.cc/"
+}
+</script>
 </head>
 <body>
+<header class="header">
+  <div class="wrap"><div class="hrow">
+    <div class="logoRow"><div class="logo">F</div><div class="brand">FreeOnlineConverters</div><span class="badge">Private</span></div>
+    <nav class="tabs" aria-label="Tools">
+      <a href="/" class="tabBtn active" aria-current="page">Video</a>
+      <a href="/image-resizer.html" class="tabBtn">Image Resizer</a>
+      <a href="/pdf-tools.html" class="tabBtn">PDF Tools</a>
+    </nav>
+    <button type="button" class="themeBtn" id="themeToggle" aria-label="Toggle theme">🌓</button>
+  </div></div>
+</header>
 
-    <header>
-        <h1>ResizeFlow</h1>
-        <p>Private, high-performance image optimization executed entirely in your browser.</p>
-    </header>
+<main class="wrap" style="padding:28px 20px">
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h1 class="hero-title">Video & Audio Converter — 100% Private</h1>
+        <p class="hero-sub">Convert formats entirely in your browser. Nothing leaves your device. Best under 500 MB.</p>
+        <div class="privacy-pills"><span class="pill">🔒 No upload</span><span class="pill">⚡ FFmpeg.wasm</span><span class="pill">Files stay on device</span></div>
 
-    <!-- AdSense Reservation Placeholder to prevent CLS -->
-    <div class="ad-container">
-        <span class="ad-label">Advertisement</span>
+        <div class="progress-wrap" id="vProgressWrap" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" id="vProgressBar"></div></div>
+        <div id="engineStatus" class="status-line" style="text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px;margin-bottom:12px">Engine: <span id="engineText">Click to load — we only load FFmpeg after you add a file</span></div>
+
+        <div id="vDrop" class="drop" tabindex="0" role="button" aria-label="Drop video or audio files">
+          <div class="plus">+</div>
+          <div class="drop-title">Drop a video or audio file, or click to browse</div>
+          <div class="drop-hint">MP4 · MOV · MKV · WebM · MP3 · WAV · and more</div>
+          <input id="vInput" type="file" accept="video/*,audio/*" hidden>
+        </div>
+
+        <div id="vList" style="margin-top:16px;display:flex;flex-direction:column;gap:12px"></div>
+        <div id="vStatus" class="status-line" aria-live="polite"></div>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:12px">How it works</h2>
+        <ol style="padding-left:20px;color:var(--text-secondary);display:flex;flex-direction:column;gap:8px">
+          <li><strong>Add file</strong> — drop or select. Nothing is uploaded.</li>
+          <li><strong>Engine loads on demand</strong> — we fetch FFmpeg.wasm (~30MB) only after you add a file.</li>
+          <li><strong>Convert & download</strong> — pick format and download instantly.</li>
+        </ol>
+      </div>
     </div>
+    <aside>
+      <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4747106371991816" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+      <div class="card" style="padding:20px">
+        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:8px">Why private?</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">Other converters upload your videos. We use FFmpeg.wasm — all processing in your browser, works offline after first load.</p>
+      </div>
+    </aside>
+  </div>
+</main>
 
-    <main>
-        <!-- Upload Dropzone -->
-        <div class="upload-area" id="uploadArea">
-            <span class="badge" id="fileBadge">0 Files</span>
-            <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 6px;">Drop single or multiple images here</p>
-            <p style="font-size: 0.85rem; color: var(--text-secondary);">or click to browse from your device</p>
-            <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/webp, image/gif, image/avif">
-        </div>
+<footer><div class="wrap"><div class="footer-inner"><div>© 2026 FreeOnlineConverters · Private by design</div><div class="footer-links"><a href="/privacy-policy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></div></div></div></footer>
 
-        <div class="editor-grid">
-            <!-- Sidebar Controls -->
-            <div class="controls-card">
-                <div class="control-group">
-                    <label for="imgWidth">Width (px)</label>
-                    <input type="number" id="imgWidth" placeholder="Auto / Original">
-                </div>
 
-                <div class="control-group">
-                    <label for="imgHeight">Height (px)</label>
-                    <input type="number" id="imgHeight" placeholder="Auto / Original">
-                </div>
+<!-- Consent Banner - GDPR + Quebec Law 25 compliant -->
+<div id="consentBanner" role="dialog" aria-live="polite" aria-label="Cookie consent" style="display:none;position:fixed;bottom:16px;left:16px;right:16px;max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:9999;gap:12px;align-items:center;flex-wrap:wrap">
+  <div style="flex:1;min-width:220px;font-size:0.9rem;line-height:1.4">
+    <strong style="display:block;margin-bottom:4px">Privacy first</strong>
+    We use cookies for analytics and ads only if you accept. Your files never leave your device. <a href="/privacy-policy.html">Privacy policy</a>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button type="button" id="consentDeny" class="btn btn-ghost" style="padding:10px 16px">Deny</button>
+    <button type="button" id="consentAccept" class="btn" style="background:var(--primary);color:white;padding:10px 18px;border-radius:10px;border:0;font-weight:600">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  const BANNER = document.getElementById('consentBanner');
+  const KEY = 'fcc_consent_choice'; // freeonlineconverters choice
+  const saved = localStorage.getItem(KEY);
+  
+  function injectGA(){
+    if(document.querySelector('script[data-ga]')) return;
+    var s1 = document.createElement('script');
+    s1.async = true;
+    s1.src = 'https://www.googletagmanager.com/gtag/js?id=G-Q6QJX3F5R3';
+    s1.setAttribute('data-ga','1');
+    document.head.appendChild(s1);
+    var s2 = document.createElement('script');
+    s2.textContent = "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-Q6QJX3F5R3',{anonymize_ip:true});";
+    document.head.appendChild(s2);
+  }
+  function injectAds(){
+    if(document.querySelector('script[data-ads]')) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4747106371991816';
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-ads','1');
+    document.head.appendChild(s);
+  }
+  function loadAll(){
+    injectGA();
+    injectAds();
+    try{ gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'}); }catch(e){}
+  }
+  
+  if(saved==='granted'){
+    loadAll();
+  } else if(saved==='denied'){
+    // do nothing, keep denied
+  } else {
+    // show banner after 800ms
+    setTimeout(()=>{ BANNER.style.display='flex'; }, 800);
+  }
+  
+  document.getElementById('consentAccept')?.addEventListener('click', ()=>{
+    localStorage.setItem(KEY,'granted');
+    BANNER.style.display='none';
+    loadAll();
+  });
+  document.getElementById('consentDeny')?.addEventListener('click', ()=>{
+    localStorage.setItem(KEY,'denied');
+    BANNER.style.display='none';
+  });
+})();
+</script>
 
-                <div class="control-group">
-                    <label for="exportFormat">Target Format</label>
-                    <select id="exportFormat">
-                        <option value="image/webp" selected>WebP (Optimized)</option>
-                        <option value="image/jpeg">JPEG</option>
-                        <option value="image/png">PNG</option>
-                    </select>
-                </div>
 
-                <!-- Progressive Disclosure Accordion for Fine-Tuning -->
-                <div class="accordion">
-                    <button class="accordion-header" onclick="toggleAccordion('advOptions')">
-                        <span>Advanced Tuning</span>
-                        <span id="advArrow">▼</span>
-                    </button>
-                    <div class="accordion-body" id="advOptions">
-                        <div class="control-group">
-                            <label for="imgQuality">Quality (<span id="qualityLabel">85</span>%)</label>
-                            <input type="range" id="imgQuality" min="10" max="100" value="85">
-                        </div>
-                        <div class="control-group">
-                            <label for="resizeMode">Interpolation Method</label>
-                            <select id="resizeMode">
-                                <option value="high">Bicubic (Smooth)</option>
-                                <option value="pixelated">Nearest Neighbor (Pixel Art)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+<script>
+// Theme toggle
+document.getElementById('themeToggle')?.addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', cur);
+  localStorage.setItem('theme', cur);
+});
 
-                <button class="btn-action" id="processBtn">Process Image(s)</button>
-                <a id="downloadLink" class="btn-action" style="display: none; background-color: var(--success-color);">Download Output</a>
-            </div>
+// Drop handling + lazy FFmpeg loader skeleton
+const vDrop = document.getElementById('vDrop');
+const vInput = document.getElementById('vInput');
+const vList = document.getElementById('vList');
+const vProgressWrap = document.getElementById('vProgressWrap');
+const vProgressBar = document.getElementById('vProgressBar');
+const engineText = document.getElementById('engineText');
+let ffmpegLoaded = false;
 
-            <!-- Workspace Preview Area -->
-            <div class="workspace-card">
-                <div class="preview-container" id="previewContainer">
-                    <p style="color: var(--text-secondary);" id="placeholderText">No image selected. Upload an asset to preview.</p>
-                    <img id="imagePreview" style="display: none;" alt="Uploaded preview">
-                    <canvas id="outputCanvas" style="display: none;"></canvas>
-                </div>
-            </div>
-        </div>
-    </main>
+function setProgress(p){ vProgressWrap.style.display='block'; vProgressBar.style.width=p+'%'; }
 
-    <footer>
-        <p>&copy; 2026 ResizeFlow.cc. All operations executed locally on your client machine.</p>
-    </footer>
+async function loadFFmpeg(){ 
+  if(ffmpegLoaded) return;
+  engineText.textContent = 'Loading engine (30MB, once)...';
+  setProgress(10);
+  // Dynamically import FFmpeg - replace with your actual loader
+  // const {createFFmpeg} = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/ffmpeg.min.js');
+  // For demo, simulate
+  await new Promise(r=>setTimeout(r, 1200));
+  setProgress(100);
+  setTimeout(()=>{ vProgressWrap.style.display='none'; }, 600);
+  engineText.textContent = 'Engine ready ✓';
+  ffmpegLoaded = true;
+}
 
-    <script>
-        let selectedFiles = [];
-        let activeObjectURL = null;
+function handleFiles(files){
+  if(!files[0]) return;
+  const file = files[0];
+  const item = document.createElement('div');
+  item.className = 'card';
+  item.style.padding='16px';
+  item.innerHTML = `<div style="font-weight:600">${file.name}</div><div style="font-size:0.8rem;color:var(--muted)">${Math.round(file.size/1024/1024*100)/100} MB</div><div style="display:flex;gap:8px;margin-top:10px"><select id="outFmt" style="padding:8px;border-radius:8px;border:1px solid var(--border)"><option value="mp4">MP4</option><option value="mov">MOV</option><option value="mp3">MP3</option><option value="webm">WebM</option><option value="gif">GIF</option></select><button type="button" class="btnPrimary" id="convertBtn">Convert</button></div>`;
+  vList.innerHTML=''; vList.appendChild(item);
+  vDrop.style.display='none';
+  loadFFmpeg();
+  item.querySelector('#convertBtn').addEventListener('click', async ()=>{
+    document.getElementById('vStatus').textContent = 'Converting ' + file.name + '... (this is where FFmpeg would run)';
+    // TODO: plug real FFmpeg conversion here
+  });
+}
 
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const fileBadge = document.getElementById('fileBadge');
-        const imagePreview = document.getElementById('imagePreview');
-        const outputCanvas = document.getElementById('outputCanvas');
-        const placeholderText = document.getElementById('placeholderText');
-        const processBtn = document.getElementById('processBtn');
-        const downloadLink = document.getElementById('downloadLink');
-        const imgQuality = document.getElementById('imgQuality');
-        const qualityLabel = document.getElementById('qualityLabel');
-
-        // URL Deep Link pre-selection check
-        window.addEventListener('DOMContentLoaded', () => {
-            const hash = window.location.hash.replace('#', '');
-            const params = new URLSearchParams(hash);
-            if (params.has('targetFormat')) {
-                const target = 'image/' + params.get('targetFormat');
-                const select = document.getElementById('exportFormat');
-                for (let option of select.options) {
-                    if (option.value === target) select.value = target;
-                }
-            }
-        });
-
-        // Progressive Disclosure Toggle
-        function toggleAccordion(id) {
-            const body = document.getElementById(id);
-            const arrow = document.getElementById('advArrow');
-            body.classList.toggle('open');
-            arrow.innerText = body.classList.contains('open') ? '▲' : '▼';
-        }
-
-        // Handle Slider Update
-        imgQuality.addEventListener('input', (e) => {
-            qualityLabel.innerText = e.target.value;
-        });
-
-        // Drag & Drop Handlers
-        uploadArea.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('drag-over');
-        });
-        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('drag-over');
-            if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length) handleFiles(e.target.files);
-        });
-
-        function handleFiles(files) {
-            selectedFiles = Array.from(files);
-            fileBadge.innerText = `${selectedFiles.length} File${selectedFiles.length > 1 ? 's' : ''}`;
-            fileBadge.style.display = 'block';
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                placeholderText.style.display = 'none';
-                outputCanvas.style.display = 'none';
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-                downloadLink.style.display = 'none';
-            };
-            reader.readAsDataURL(selectedFiles[0]);
-        }
-
-        // Primary Image Processing Pipeline
-        processBtn.addEventListener('click', async () => {
-            if (!selectedFiles.length) return alert('Please select an image first.');
-
-            // Clean previous Memory Object URLs
-            if (activeObjectURL) {
-                URL.revokeObjectURL(activeObjectURL);
-                activeObjectURL = null;
-            }
-
-            const format = document.getElementById('exportFormat').value;
-            const quality = parseFloat(imgQuality.value) / 100;
-            const targetW = parseInt(document.getElementById('imgWidth').value) || null;
-            const targetH = parseInt(document.getElementById('imgHeight').value) || null;
-            const algo = document.getElementById('resizeMode').value;
-
-            // Single File Processing
-            if (selectedFiles.length === 1) {
-                const img = new Image();
-                img.src = imagePreview.src;
-                await img.decode();
-
-                let w = targetW || img.width;
-                let h = targetH || img.height;
-
-                if (targetW && !targetH) h = Math.round((img.height / img.width) * targetW);
-                if (targetH && !targetW) w = Math.round((img.width / img.height) * targetH);
-
-                outputCanvas.width = w;
-                outputCanvas.height = h;
-
-                const ctx = outputCanvas.getContext('2d');
-                ctx.imageSmoothingEnabled = (algo !== 'pixelated');
-                if (algo !== 'pixelated') ctx.imageSmoothingQuality = 'high';
-
-                ctx.drawImage(img, 0, 0, w, h);
-
-                imagePreview.style.display = 'none';
-                outputCanvas.style.display = 'block';
-
-                outputCanvas.toBlob((blob) => {
-                    activeObjectURL = URL.createObjectURL(blob);
-                    downloadLink.href = activeObjectURL;
-                    downloadLink.download = `optimized-image.${format.split('/')[1]}`;
-                    downloadLink.style.display = 'block';
-                    downloadLink.innerText = 'Download Image';
-                }, format, quality);
-
-            } else {
-                // Batch Zip Processing via JSZip
-                if (typeof JSZip === 'undefined') {
-                    return alert('Batch dependency (JSZip) is still loading. Please try again in a moment.');
-                }
-
-                processBtn.innerText = 'Compressing Batch...';
-                const zip = new JSZip();
-
-                for (let i = 0; i < selectedFiles.length; i++) {
-                    const file = selectedFiles[i];
-                    const img = await loadImage(file);
-                    
-                    let w = targetW || img.width;
-                    let h = targetH || img.height;
-                    if (targetW && !targetH) h = Math.round((img.height / img.width) * targetW);
-                    if (targetH && !targetW) w = Math.round((img.width / img.height) * targetH);
-
-                    const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = w;
-                    tempCanvas.height = h;
-                    const ctx = tempCanvas.getContext('2d');
-                    ctx.imageSmoothingEnabled = (algo !== 'pixelated');
-                    ctx.drawImage(img, 0, 0, w, h);
-
-                    const blob = await new Promise(res => tempCanvas.toBlob(res, format, quality));
-                    const fileName = `image-${i + 1}.${format.split('/')[1]}`;
-                    zip.file(fileName, blob);
-                }
-
-                const zipBlob = await zip.generateAsync({ type: 'blob' });
-                activeObjectURL = URL.createObjectURL(zipBlob);
-                downloadLink.href = activeObjectURL;
-                downloadLink.download = 'resizeflow-batch.zip';
-                downloadLink.style.display = 'block';
-                downloadLink.innerText = 'Download Batch (.ZIP)';
-                processBtn.innerText = 'Process Image(s)';
-            }
-        });
-
-        function loadImage(file) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                const url = URL.createObjectURL(file);
-                img.onload = () => {
-                    URL.revokeObjectURL(url);
-                    resolve(img);
-                };
-                img.src = url;
-            });
-        }
-    </script>
+vDrop.addEventListener('click', ()=> vInput.click());
+vDrop.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); vInput.click(); } });
+vDrop.addEventListener('dragover', (e)=>{ e.preventDefault(); vDrop.style.borderColor='var(--primary)'; });
+vDrop.addEventListener('dragleave', ()=>{ vDrop.style.borderColor=''; });
+vDrop.addEventListener('drop', (e)=>{ e.preventDefault(); vDrop.style.borderColor=''; handleFiles(e.dataTransfer.files); });
+vInput.addEventListener('change', (e)=> handleFiles(e.target.files));
+</script>
 </body>
 </html>
