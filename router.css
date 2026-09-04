@@ -1,0 +1,3 @@
+/* Router fail-safe: fragment links still reveal the correct tool if a local file blocks JavaScript navigation. */
+.page:target{display:block!important}
+body:has(.page:target) .page.active:not(:target){display:none!important}

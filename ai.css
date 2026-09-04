@@ -1,0 +1,1 @@
+.ai-button{background:var(--lime);border:1px solid var(--ink);padding:11px;font:800 12px Manrope;cursor:pointer;text-align:left}.ai-button small{font:10px 'DM Mono';float:right}.ai-note,.ai-disclosure{font-size:11px;line-height:1.5;color:var(--muted);margin:-11px 0 0}.ai-status{font:11px 'DM Mono';color:#5c5e56;min-height:16px}.ai-status.error{color:#a93027}
